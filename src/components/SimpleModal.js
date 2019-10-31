@@ -1,10 +1,6 @@
 import React, { useEffect } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Modal from "@material-ui/core/Modal"
-import AddProjectForm from "./AddProjectForm"
-import Divider from "@material-ui/core/Divider"
-import { useSelector, useDispatch } from "react-redux"
-import { toggleProjectModal } from "../store/actions/projectAction"
 
 function rand() {
   return Math.round(Math.random() * 20) - 10
@@ -32,36 +28,29 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SimpleModal({ children }) {
+export default function SimpleModal({
+  children,
+  content,
+  toggleHandler,
+  state
+}) {
   const classes = useStyles()
-  const dispatch = useDispatch()
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle)
-  const { isProjectModal } = useSelector(state => state.projectReducer)
-
-  const handleOpen = () => {
-    dispatch(toggleProjectModal())
-  }
-
-  const handleClose = () => {
-    dispatch(toggleProjectModal())
-  }
 
   return (
     <div>
-      <div role="button" onClick={handleOpen}>
+      <div role="button" onClick={toggleHandler}>
         {children}
       </div>
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        open={isProjectModal}
-        onClose={handleClose}
+        open={state}
+        onClose={toggleHandler}
       >
         <div style={modalStyle} className={classes.paper}>
-          <h2>Add Project</h2>
-          <Divider />
-          <AddProjectForm handleClose={handleClose} />
+          {content}
         </div>
       </Modal>
     </div>

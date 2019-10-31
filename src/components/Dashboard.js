@@ -17,9 +17,14 @@ import EventNoteIcon from "@material-ui/icons/EventNote"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import SimpleModal from "./SimpleModal"
 import { useSelector, useDispatch } from "react-redux"
-import { getProjects, deleteProject } from "../store/actions/projectAction"
+import {
+  getProjects,
+  deleteProject,
+  toggleProjectModal
+} from "../store/actions/projectAction"
 import DeleteIcon from "@material-ui/icons/Delete"
 import SearchAppBar from "./SearchAppBar"
+import AddProjectForm from "./QuickAddTask"
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -60,12 +65,20 @@ const sidebar = [
     icon: <EventNoteIcon />
   }
 ]
-
 export default function DashBoard() {
   const classes = useStyles()
-  const [active, setActive] = useState("Inbox")
-  const { projects } = useSelector(state => state.projectReducer)
   const dispatch = useDispatch()
+  const [active, setActive] = useState("Inbox")
+  const { projects, isProjectModal } = useSelector(
+    state => state.projectReducer
+  )
+  const addProject = (
+    <>
+      <h2>Add Project</h2>
+      <Divider />
+      <AddProjectForm handleClose={() => dispatch(toggleProjectModal())} />
+    </>
+  )
 
   useEffect(() => {
     console.log(projects)
@@ -76,13 +89,6 @@ export default function DashBoard() {
     <div className={classes.root}>
       <CssBaseline />
       <SearchAppBar />
-      {/* <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Logo goes here
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -128,7 +134,11 @@ export default function DashBoard() {
                 <DeleteIcon onClick={() => dispatch(deleteProject(item.id))} />
               </ListItem>
             ))}
-          <SimpleModal>
+          <SimpleModal
+            content={addProject}
+            toggleHandler={() => dispatch(toggleProjectModal())}
+            state={isProjectModal}
+          >
             <ListItem button key="Add Project">
               <ListItemIcon>
                 <AddIcon style={{ color: "red" }} />

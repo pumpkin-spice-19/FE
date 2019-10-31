@@ -7,6 +7,13 @@ export const toggleProjectModal = () => {
     type: TOGGLE_PROJECT_MODAL
   }
 }
+// -------------- TOGGLE QUICK ADD TASK MODAL --------------
+export const TOGGLE_QUICKTASK_MODAL = "TOGGLE_QUICKTASK_MODAL"
+export const toggleQuickAddModal = () => {
+  return {
+    type: TOGGLE_QUICKTASK_MODAL
+  }
+}
 
 const URL = `https://letzdo-it-2019.herokuapp.com/api/project`
 // -------------- GET PROJECTS --------------

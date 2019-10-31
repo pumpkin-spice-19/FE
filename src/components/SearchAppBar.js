@@ -9,6 +9,11 @@ import Brightness4Icon from "@material-ui/icons/Brightness4"
 import SearchIcon from "@material-ui/icons/Search"
 import AddIcon from "@material-ui/icons/Add"
 import CodeIcon from "@material-ui/icons/Code"
+import SimpleModal from "./SimpleModal"
+import Divider from "@material-ui/core/Divider"
+import QuickAddTask from "./QuickAddTask"
+import { useSelector, useDispatch } from "react-redux"
+import { toggleQuickAddModal } from "../store/actions/projectAction"
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -65,7 +70,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function SearchAppBar() {
   const classes = useStyles()
-
+  const dispatch = useDispatch()
+  const { quickAddModal } = useSelector(state => state.projectReducer)
+  const addTask = (
+    <>
+      <h2>Quick Add Task</h2>
+      <Divider />
+      <QuickAddTask handleClose={() => dispatch(toggleQuickAddModal())} />
+    </>
+  )
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
@@ -86,7 +99,14 @@ export default function SearchAppBar() {
           />
         </div>
 
-        <AddIcon />
+        <SimpleModal
+          content={addTask}
+          toggleHandler={() => dispatch(toggleQuickAddModal())}
+          state={quickAddModal}
+        >
+          <AddIcon />
+        </SimpleModal>
+
         <Brightness4Icon />
       </Toolbar>
     </AppBar>

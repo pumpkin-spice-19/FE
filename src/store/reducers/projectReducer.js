@@ -1,5 +1,6 @@
 import {
   TOGGLE_PROJECT_MODAL,
+  TOGGLE_QUICKTASK_MODAL,
   GET_PROJECT_START,
   GET_PROJECT_SUCCESS,
   GET_PROJECT_FAILURE,
@@ -14,7 +15,8 @@ import {
 const initialState = {
   projects: [],
   isProjectLoading: false,
-  isProjectModal: false
+  isProjectModal: false,
+  quickAddModal: false
 }
 
 export default function projectReducer(state = initialState, action) {
@@ -24,6 +26,12 @@ export default function projectReducer(state = initialState, action) {
       return {
         ...state,
         isProjectModal: !state.isProjectModal
+      }
+    // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
+    case TOGGLE_QUICKTASK_MODAL:
+      return {
+        ...state,
+        quickAddModal: !state.quickAddModal
       }
     // ----------------- GET_TOP_RATED -----------------
     case GET_PROJECT_START:
