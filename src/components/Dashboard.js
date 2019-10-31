@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Drawer from "@material-ui/core/Drawer"
 import AppBar from "@material-ui/core/AppBar"
@@ -16,9 +16,10 @@ import TodayIcon from "@material-ui/icons/Today"
 import EventNoteIcon from "@material-ui/icons/EventNote"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import SimpleModal from "./SimpleModal"
+import { useSelector, useDispatch } from "react-redux"
+import { getProjects } from "../store/actions/projectAction"
 
 const drawerWidth = 240
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -39,7 +40,6 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: theme.mixins.toolbar
 }))
-
 const sidebar = [
   {
     name: "Inbox",
@@ -54,7 +54,6 @@ const sidebar = [
     icon: <EventNoteIcon />
   }
 ]
-
 const secondList = [
   {
     name: "🙌 Welcome",
@@ -65,7 +64,14 @@ const secondList = [
 export default function DashBoard() {
   const classes = useStyles()
   const [active, setActive] = useState("Inbox")
+  const { projects } = useSelector(state => state.projectReducer)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(getProjects())
+  }, [])
+
+  console.log(projects)
   return (
     <div className={classes.root}>
       <CssBaseline />
