@@ -15,7 +15,7 @@ import AddIcon from "@material-ui/icons/Add"
 import TodayIcon from "@material-ui/icons/Today"
 import EventNoteIcon from "@material-ui/icons/EventNote"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
-import SpringModal from "./SpringModal"
+import SimpleModal from "./SimpleModal"
 
 const drawerWidth = 240
 
@@ -72,7 +72,7 @@ export default function DashBoard() {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Clipped drawer
+            Logo goes here
           </Typography>
         </Toolbar>
       </AppBar>
@@ -112,12 +112,14 @@ export default function DashBoard() {
               <ListItemText primary={item.name} />
             </ListItem>
           ))}
-          <ListItem button key="Add Project" onClick={() => {}}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add Project" />
-          </ListItem>
+          <SimpleModal>
+            <ListItem button key="Add Project">
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="Add Project" />
+            </ListItem>
+          </SimpleModal>
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -125,8 +127,6 @@ export default function DashBoard() {
         <h2>{active}</h2>
         <p>Add Tasks</p>
       </main>
-
-      <SpringModal />
     </div>
   )
 }
