@@ -39,3 +39,19 @@ export const addProject = data => async dispatch => {
     dispatch({ type: ADD_PROJECT_FAILURE, payload: error })
   }
 }
+
+// -------------- DELETE PROJECT --------------
+export const DELETE_PROJECT_START = "DELETE_PROJECT_START"
+export const DELETE_PROJECT_SUCCESS = "DELETE_PROJECT_SUCCESS"
+export const DELETE_PROJECT_FAILURE = "DELETE_PROJECT_FAILURE"
+
+export const deleteProject = id => async dispatch => {
+  try {
+    dispatch({ type: DELETE_PROJECT_START })
+    await axios.delete(`${URL}/` + id)
+    dispatch({ type: DELETE_PROJECT_SUCCESS })
+    getProjects()(dispatch)
+  } catch (error) {
+    dispatch({ type: DELETE_PROJECT_FAILURE, payload: error })
+  }
+}

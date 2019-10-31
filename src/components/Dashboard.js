@@ -17,7 +17,8 @@ import EventNoteIcon from "@material-ui/icons/EventNote"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import SimpleModal from "./SimpleModal"
 import { useSelector, useDispatch } from "react-redux"
-import { getProjects } from "../store/actions/projectAction"
+import { getProjects, deleteProject } from "../store/actions/projectAction"
+import DeleteIcon from "@material-ui/icons/Delete"
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -112,6 +113,7 @@ export default function DashBoard() {
                 <FiberManualRecordIcon style={{ color: `${item.color}` }} />
               </ListItemIcon>
               <ListItemText primary={item.name} />
+              <DeleteIcon onClick={() => dispatch(deleteProject(item.id))} />
             </ListItem>
           ))}
           <SimpleModal>

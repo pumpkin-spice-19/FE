@@ -1,11 +1,14 @@
 import {
+  TOGGLE_PROJECT_MODAL,
   GET_PROJECT_START,
   GET_PROJECT_SUCCESS,
   GET_PROJECT_FAILURE,
   ADD_PROJECT_SUCCESS,
   ADD_PROJECT_FAILURE,
   ADD_PROJECT_START,
-  TOGGLE_PROJECT_MODAL
+  DELETE_PROJECT_SUCCESS,
+  DELETE_PROJECT_FAILURE,
+  DELETE_PROJECT_START
 } from "../actions/projectAction"
 
 const initialState = {
@@ -53,6 +56,23 @@ export default function projectReducer(state = initialState, action) {
         isProjectModal: !state.isProjectModal
       }
     case ADD_PROJECT_FAILURE:
+      return {
+        ...state,
+        isProjectLoading: false,
+        errors: action.payload
+      }
+    // ----------------- DELETE PROJECT -----------------
+    case DELETE_PROJECT_START:
+      return {
+        ...state,
+        isProjectLoading: true
+      }
+    case DELETE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isProjectLoading: false
+      }
+    case DELETE_PROJECT_FAILURE:
       return {
         ...state,
         isProjectLoading: false,
