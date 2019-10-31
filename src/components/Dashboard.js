@@ -54,12 +54,6 @@ const sidebar = [
     icon: <EventNoteIcon />
   }
 ]
-const secondList = [
-  {
-    name: "🙌 Welcome",
-    icon: <FiberManualRecordIcon />
-  }
-]
 
 export default function DashBoard() {
   const classes = useStyles()
@@ -68,10 +62,10 @@ export default function DashBoard() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log(projects)
     dispatch(getProjects())
   }, [])
 
-  console.log(projects)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -106,7 +100,7 @@ export default function DashBoard() {
         </List>
         <Divider />
         <List>
-          {secondList.map((item, index) => (
+          {projects.map((item, index) => (
             <ListItem
               button
               key={item.name}
@@ -114,7 +108,9 @@ export default function DashBoard() {
                 setActive(item.name)
               }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon>
+                <FiberManualRecordIcon />
+              </ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItem>
           ))}
