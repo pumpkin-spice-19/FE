@@ -9,6 +9,10 @@ import MenuItem from "@material-ui/core/MenuItem"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import FormControl from "@material-ui/core/FormControl"
 import Select from "@material-ui/core/Select"
+import { useDispatch } from "react-redux"
+import { addProject } from "../store/actions/projectAction"
+import { colorPallete } from "../helper/index"
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -28,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function AddProjectForm({ handleClose }) {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const [project, setProject] = useState({
     name: "",
     color: ""
@@ -35,16 +40,19 @@ export default function AddProjectForm({ handleClose }) {
   const [check, setCheck] = useState({
     checked: false
   })
-
   const handleChange = name => e => {
     setProject({ ...project, [name]: e.target.value })
   }
-
   const handleSubmit = e => {
     e.preventDefault()
-    console.log(project, check)
-    // reset form
+    const newProject = {
+      color: project.color,
+      fav: check.checked,
+      name: project.name
+    }
+    dispatch(addProject(newProject))
     setProject({ name: "", color: "" })
+    // reset form
   }
   const handleChecked = name => event => {
     setCheck({ ...check, [name]: event.target.checked })
@@ -71,9 +79,12 @@ export default function AddProjectForm({ handleClose }) {
         <FormControl className={classes.formControl}>
           <InputLabel>Project color</InputLabel>
           <Select value={project.color} onChange={handleChange("color")}>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {colorPallete.map((item, index) => (
+              <MenuItem key={item.hex + index} value={item.hex}>
+                <FiberManualRecordIcon style={{ color: `${item.hex}` }} />
+                {item.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 

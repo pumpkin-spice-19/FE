@@ -103,13 +103,13 @@ export default function DashBoard() {
           {projects.map((item, index) => (
             <ListItem
               button
-              key={item.name}
+              key={item.id}
               onClick={() => {
                 setActive(item.name)
               }}
             >
               <ListItemIcon>
-                <FiberManualRecordIcon />
+                <FiberManualRecordIcon style={{ color: `${item.color}` }} />
               </ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItem>
@@ -117,7 +117,7 @@ export default function DashBoard() {
           <SimpleModal>
             <ListItem button key="Add Project">
               <ListItemIcon>
-                <AddIcon />
+                <AddIcon style={{ color: "red" }} />
               </ListItemIcon>
               <ListItemText primary="Add Project" />
             </ListItem>

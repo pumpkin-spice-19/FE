@@ -1,5 +1,13 @@
 import axios from "axios"
 
+// -------------- TOGGLE PROJECT MODAL --------------
+export const TOGGLE_PROJECT_MODAL = "TOGGLE_PROJECT_MODAL"
+export const toggleProjectModal = () => {
+  return {
+    type: TOGGLE_PROJECT_MODAL
+  }
+}
+
 const URL = `https://letzdo-it-2019.herokuapp.com/api/project`
 // -------------- GET PROJECTS --------------
 export const GET_PROJECT_START = "GET_PROJECT_START"
@@ -24,8 +32,9 @@ export const ADD_PROJECT_FAILURE = "ADD_PROJECT_FAILURE"
 export const addProject = data => async dispatch => {
   try {
     dispatch({ type: ADD_PROJECT_START })
-    const response = await axios.post(URL, { data })
-    dispatch({ type: ADD_PROJECT_SUCCESS, payload: response.data })
+    await axios.post(URL, data)
+    dispatch({ type: ADD_PROJECT_SUCCESS })
+    getProjects()(dispatch)
   } catch (error) {
     dispatch({ type: ADD_PROJECT_FAILURE, payload: error })
   }

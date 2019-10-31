@@ -1,16 +1,27 @@
 import {
   GET_PROJECT_START,
   GET_PROJECT_SUCCESS,
-  GET_PROJECT_FAILURE
+  GET_PROJECT_FAILURE,
+  ADD_PROJECT_SUCCESS,
+  ADD_PROJECT_FAILURE,
+  ADD_PROJECT_START,
+  TOGGLE_PROJECT_MODAL
 } from "../actions/projectAction"
 
 const initialState = {
   projects: [],
-  isProjectLoading: false
+  isProjectLoading: false,
+  isProjectModal: false
 }
 
 export default function projectReducer(state = initialState, action) {
   switch (action.type) {
+    // ----------------- TOGGLER PROJECT MODAL -----------------
+    case TOGGLE_PROJECT_MODAL:
+      return {
+        ...state,
+        isProjectModal: !state.isProjectModal
+      }
     // ----------------- GET_TOP_RATED -----------------
     case GET_PROJECT_START:
       return {
@@ -24,6 +35,24 @@ export default function projectReducer(state = initialState, action) {
         isProjectLoading: false
       }
     case GET_PROJECT_FAILURE:
+      return {
+        ...state,
+        isProjectLoading: false,
+        errors: action.payload
+      }
+    // ----------------- ADD PROJECT -----------------
+    case ADD_PROJECT_START:
+      return {
+        ...state,
+        isProjectLoading: true
+      }
+    case ADD_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isProjectLoading: false,
+        isProjectModal: !state.isProjectModal
+      }
+    case ADD_PROJECT_FAILURE:
       return {
         ...state,
         isProjectLoading: false,
