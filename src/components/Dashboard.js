@@ -19,6 +19,7 @@ import SimpleModal from "./SimpleModal"
 import { useSelector, useDispatch } from "react-redux"
 import { getProjects, deleteProject } from "../store/actions/projectAction"
 import DeleteIcon from "@material-ui/icons/Delete"
+import SearchAppBar from "./SearchAppBar"
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -39,7 +40,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3)
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
+  noContent: {
+    textAlign: "center",
+    color: "#9E9E9E"
+  }
 }))
 const sidebar = [
   {
@@ -70,13 +75,14 @@ export default function DashBoard() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <SearchAppBar />
+      {/* <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
             Logo goes here
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -101,21 +107,27 @@ export default function DashBoard() {
         </List>
         <Divider />
         <List>
-          {projects.map((item, index) => (
-            <ListItem
-              button
-              key={item.id}
-              onClick={() => {
-                setActive(item.name)
-              }}
-            >
-              <ListItemIcon>
-                <FiberManualRecordIcon style={{ color: `${item.color}` }} />
-              </ListItemIcon>
-              <ListItemText primary={item.name} />
-              <DeleteIcon onClick={() => dispatch(deleteProject(item.id))} />
+          {!projects.length && (
+            <ListItem className={classes.noContent}>
+              You have no projects
             </ListItem>
-          ))}
+          )}
+          {projects &&
+            projects.map((item, index) => (
+              <ListItem
+                button
+                key={item.id}
+                onClick={() => {
+                  setActive(item.name)
+                }}
+              >
+                <ListItemIcon>
+                  <FiberManualRecordIcon style={{ color: `${item.color}` }} />
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+                <DeleteIcon onClick={() => dispatch(deleteProject(item.id))} />
+              </ListItem>
+            ))}
           <SimpleModal>
             <ListItem button key="Add Project">
               <ListItemIcon>
@@ -129,7 +141,10 @@ export default function DashBoard() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h2>{active}</h2>
-        <p>Add Tasks</p>
+        <p>
+          <AddIcon style={{ color: "red" }} />
+          Add Tasks
+        </p>
       </main>
     </div>
   )
