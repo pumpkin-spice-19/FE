@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import FormControl from "@material-ui/core/FormControl"
 import Select from "@material-ui/core/Select"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addProject } from "../store/actions/projectAction"
 import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
@@ -33,12 +33,10 @@ const useStyles = makeStyles(theme => ({
 export default function QuickAddTask({ handleClose }) {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const { projects } = useSelector(state => state.projectReducer)
   const [project, setProject] = useState({
-    name: "",
-    color: ""
-  })
-  const [check, setCheck] = useState({
-    checked: false
+    task: "",
+    projectName: ""
   })
   const handleChange = name => e => {
     setProject({ ...project, [name]: e.target.value })
@@ -46,18 +44,25 @@ export default function QuickAddTask({ handleClose }) {
   const handleSubmit = e => {
     e.preventDefault()
     const newProject = {
-      color: project.color,
-      fav: check.checked,
-      name: project.name
+      task: project.task,
+      projectName: project.projectName
     }
-    dispatch(addProject(newProject))
-    setProject({ name: "", color: "" })
+    console.log(newProject)
+    // dispatch(addProject(newProject))
     // reset form
+    setProject({ task: "", projectName: "" })
   }
-  const handleChecked = name => event => {
-    setCheck({ ...check, [name]: event.target.checked })
-  }
-
+  const defaultProject = [
+    {
+      name: "Inbox"
+    },
+    {
+      name: "Today"
+    },
+    {
+      name: "Next 7 days"
+    }
+  ]
   return (
     <form
       className={classes.container}
@@ -67,24 +72,32 @@ export default function QuickAddTask({ handleClose }) {
     >
       <div>
         <TextField
-          id="project-name"
-          label="Project name"
+          id="task-name"
+          label="task name"
           className={classes.textField}
-          value={project.name}
-          onChange={handleChange("name")}
+          value={project.task}
+          onChange={handleChange("task")}
           margin="normal"
           variant="outlined"
         />
 
         <FormControl className={classes.formControl}>
           <InputLabel>Project name</InputLabel>
-          <Select value={project.color} onChange={handleChange("color")}>
-            {colorPallete.map((item, index) => (
-              <MenuItem key={item.hex + index} value={item.hex}>
-                <FiberManualRecordIcon style={{ color: `${item.hex}` }} />
+          <Select
+            value={project.projectName}
+            onChange={handleChange("projectName")}
+          >
+            {defaultProject.map((item, index) => (
+              <MenuItem key={item.name + index} value={item.name}>
                 {item.name}
               </MenuItem>
             ))}
+            {projects &&
+              projects.map((item, index) => (
+                <MenuItem key={item.id} value={item.name}>
+                  {item.name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       </div>
@@ -102,7 +115,7 @@ export default function QuickAddTask({ handleClose }) {
         color="secondary"
         className={classes.button}
         type="submit"
-        disabled={!project.name}
+        disabled={!project.task}
       >
         Add
       </Button>
