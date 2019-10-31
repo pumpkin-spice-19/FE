@@ -58,7 +58,7 @@ export default function SimpleModal({ children }) {
         <div style={modalStyle} className={classes.paper}>
           <h2>Add Project</h2>
           <Divider />
-          <AddProjectForm />
+          <AddProjectForm handleClose={handleClose} />
         </div>
       </Modal>
     </div>

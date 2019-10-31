@@ -1,21 +1,13 @@
 import React from "react"
 import Switch from "@material-ui/core/Switch"
 
-export default function Switches() {
-  const [state, setState] = React.useState({
-    checkedB: false
-  })
-
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked })
-  }
-
+export default function Switches({ state, handleChecked }) {
   return (
     <div>
       <Switch
-        checked={state.checkedB}
-        onChange={handleChange("checkedB")}
-        value="checkedB"
+        checked={state.checked}
+        onChange={handleChecked("checked")}
+        value="checked"
         color="primary"
         inputProps={{ "aria-label": "primary checkbox" }}
       />

@@ -4,6 +4,11 @@ import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import Divider from "@material-ui/core/Divider"
 import Switches from "./Switches"
+import InputLabel from "@material-ui/core/InputLabel"
+import MenuItem from "@material-ui/core/MenuItem"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import FormControl from "@material-ui/core/FormControl"
+import Select from "@material-ui/core/Select"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -14,14 +19,21 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: "100%"
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: "100%"
   }
 }))
 
-export default function AddProjectForm() {
+export default function AddProjectForm({ handleClose }) {
   const classes = useStyles()
   const [project, setProject] = useState({
     name: "",
     color: ""
+  })
+  const [check, setCheck] = useState({
+    checked: false
   })
 
   const handleChange = name => e => {
@@ -30,11 +42,14 @@ export default function AddProjectForm() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log(project)
-
+    console.log(project, check)
     // reset form
     setProject({ name: "", color: "" })
   }
+  const handleChecked = name => event => {
+    setCheck({ ...check, [name]: event.target.checked })
+  }
+
   return (
     <form
       className={classes.container}
@@ -52,23 +67,28 @@ export default function AddProjectForm() {
           margin="normal"
           variant="outlined"
         />
-        <TextField
-          id="project-color"
-          label="Project color"
-          className={classes.textField}
-          value={project.color}
-          onChange={handleChange("color")}
-          margin="normal"
-          variant="outlined"
-        />
+
+        <FormControl className={classes.formControl}>
+          <InputLabel>Project color</InputLabel>
+          <Select value={project.color} onChange={handleChange("color")}>
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+          </Select>
+        </FormControl>
+
         <div>
-          <Switches />
+          <Switches handleChecked={handleChecked} state={check} />
           <p>Add to favorites</p>
         </div>
       </div>
 
       <Divider />
-      <Button variant="contained" className={classes.button}>
+      <Button
+        variant="contained"
+        className={classes.button}
+        onClick={handleClose}
+      >
         Cancel
       </Button>
       <Button
@@ -76,6 +96,7 @@ export default function AddProjectForm() {
         color="secondary"
         className={classes.button}
         type="submit"
+        disabled={!project.name}
       >
         Add
       </Button>
