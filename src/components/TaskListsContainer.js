@@ -5,7 +5,7 @@ export const TaskListsContainer = ({ tasks }) => {
   return (
     tasks &&
     tasks.map(task => {
-      return <Task task={task} />
+      return <Task key={task.id} task={task} />
     })
   )
 }

@@ -85,7 +85,8 @@ export default function DashBoard() {
     dispatch(getProjects())
   }, [])
   useEffect(() => {
-    console.log("taskQuery", taskQuery)
+    console.log("active", active)
+
     dispatch(getTaskQuery(active))
   }, [active])
 
@@ -165,11 +166,11 @@ export default function DashBoard() {
         ) : (
           <TaskListsContainer tasks={taskQuery} />
         )}
-        <p>
+        <div>
           <AddIcon style={{ color: "red" }} />
-          Add Tasks
-          <AddTask />
-        </p>
+          <p>Add Tasks</p>
+        </div>
+        <AddTask />
       </main>
     </div>
   )
