@@ -19,10 +19,12 @@ import {
   deleteProject,
   toggleProjectModal
 } from "../store/actions/projectAction"
+import { getTaskQuery } from "../store/actions/taskAction"
 import DeleteIcon from "@material-ui/icons/Delete"
 import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
 import AddTask from "./AddTask"
+import { TaskListsContainer } from "./TaskListsContainer"
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -67,9 +69,10 @@ export default function DashBoard() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [active, setActive] = useState("Inbox")
-  const { projects, isProjectModal } = useSelector(
+  const { projects, isProjectModal, isProjectLoading } = useSelector(
     state => state.projectReducer
   )
+  const { taskQuery, isTaskLoading } = useSelector(state => state.taskReducer)
   const addProject = (
     <>
       <h2>Add Project</h2>
@@ -79,9 +82,12 @@ export default function DashBoard() {
   )
 
   useEffect(() => {
-    console.log(projects)
     dispatch(getProjects())
   }, [])
+  useEffect(() => {
+    console.log("taskQuery", taskQuery)
+    dispatch(getTaskQuery(active))
+  }, [active])
 
   return (
     <div className={classes.root}>
@@ -116,7 +122,10 @@ export default function DashBoard() {
               You have no projects
             </ListItem>
           )}
-          {projects &&
+          {isProjectLoading ? (
+            <p>loading ...</p>
+          ) : (
+            projects &&
             projects.map((item, index) => (
               <ListItem
                 button
@@ -131,7 +140,8 @@ export default function DashBoard() {
                 <ListItemText primary={item.name} />
                 <DeleteIcon onClick={() => dispatch(deleteProject(item.id))} />
               </ListItem>
-            ))}
+            ))
+          )}
           <SimpleModal
             content={addProject}
             toggleHandler={() => dispatch(toggleProjectModal())}
@@ -150,6 +160,11 @@ export default function DashBoard() {
         <div className={classes.toolbar} />
         <h2>{active}</h2>
         <p>new added tasks here</p>
+        {isTaskLoading ? (
+          <p>Loading ...</p>
+        ) : (
+          <TaskListsContainer tasks={taskQuery} />
+        )}
         <p>
           <AddIcon style={{ color: "red" }} />
           Add Tasks
