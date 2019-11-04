@@ -22,6 +22,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete"
 import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
+import AddTask from "./AddTask"
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -148,9 +149,11 @@ export default function DashBoard() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h2>{active}</h2>
+        <p>new added tasks here</p>
         <p>
           <AddIcon style={{ color: "red" }} />
           Add Tasks
+          <AddTask />
         </p>
       </main>
     </div>
