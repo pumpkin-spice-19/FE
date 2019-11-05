@@ -14,6 +14,13 @@ export const toggleQuickAddModal = () => {
     type: TOGGLE_QUICKTASK_MODAL
   }
 }
+// -------------- TOGGLE PROJECT SIDE CARD --------------
+export const TOGGLE_SIDECARD = "TOGGLE_SIDECARD"
+export const toggleSideCard = () => {
+  return {
+    type: TOGGLE_SIDECARD
+  }
+}
 
 // -------------- ACTIVE PROJECT --------------
 export const SET_ACTIVE_PROJECT = "SET_ACTIVE_PROJECT"

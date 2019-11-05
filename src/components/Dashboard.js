@@ -16,19 +16,20 @@ import SimpleModal from "./SimpleModal"
 import { useSelector, useDispatch } from "react-redux"
 import {
   getProjects,
-  deleteProject,
   toggleProjectModal,
   setActiveProject
 } from "../store/actions/projectAction"
 import { getTaskQuery } from "../store/actions/taskAction"
-import DeleteIcon from "@material-ui/icons/Delete"
 import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
 import AddTask from "./AddTask"
 import { TaskListsContainer } from "./TaskListsContainer"
 import ControlledExpansionPanels from "./ControlledExpansionPanels"
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 
-const drawerWidth = 240
+import SideMenu from "./SideMenu"
+
+const drawerWidth = 300
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -57,6 +58,21 @@ const useStyles = makeStyles(theme => ({
   },
   marginRight: {
     marginRight: "10px"
+  },
+  mlAuto: {
+    marginLeft: "auto",
+    color: "gray",
+    "&:hover": {
+      color: "black"
+    }
+  },
+  cross: {
+    color: "red",
+    "&:hover": {
+      color: "white",
+      background: "red",
+      borderRadius: "50%"
+    }
   }
 }))
 const sidebar = [
@@ -151,11 +167,12 @@ export default function DashBoard() {
                     />
                   </p>
                   <p>{item.name}</p>
-                  <p>
-                    <DeleteIcon
-                      onClick={() => dispatch(deleteProject(item.id))}
-                    />
-                  </p>
+
+                  <span className={classes.mlAuto}>
+                    <SideMenu>
+                      <MoreHorizIcon />
+                    </SideMenu>
+                  </span>
                 </ListItem>
               ))
             )}
@@ -166,10 +183,7 @@ export default function DashBoard() {
             >
               <ListItem button key="Add Project">
                 <p className={classes.marginRight}>
-                  <AddIcon
-                    style={{ color: "red" }}
-                    className={classes.marginRight}
-                  />
+                  <AddIcon className={classes.cross} />
                 </p>
                 <p>Add Project</p>
               </ListItem>
@@ -192,7 +206,7 @@ export default function DashBoard() {
           <TaskListsContainer tasks={taskQuery} />
         )}
         <div>
-          <AddIcon style={{ color: "red" }} />
+          <AddIcon className={classes.cross} />
           <p>Add Tasks</p>
         </div>
         <AddTask />
