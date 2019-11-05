@@ -169,7 +169,7 @@ export default function DashBoard() {
                   <p>{item.name}</p>
 
                   <span className={classes.mlAuto}>
-                    <SideMenu>
+                    <SideMenu item={item}>
                       <MoreHorizIcon />
                     </SideMenu>
                   </span>

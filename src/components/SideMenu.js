@@ -3,6 +3,12 @@ import Button from "@material-ui/core/Button"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { makeStyles } from "@material-ui/core/styles"
+import FavoriteBorderSharpIcon from "@material-ui/icons/FavoriteBorderSharp"
+import EditSharpIcon from "@material-ui/icons/EditSharp"
+import DeleteIcon from "@material-ui/icons/Delete"
+import { useDispatch } from "react-redux"
+import { deleteProject } from "../store/actions/projectAction"
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -11,10 +17,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: "40px"
   }
 }))
-export default function SideMenu({ children }) {
+export default function SideMenu({ children, item }) {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(null)
-
   const handleClick = e => {
     e.preventDefault()
     if (e.nativeEvent.which === 1) {
@@ -46,12 +52,18 @@ export default function SideMenu({ children }) {
         onClose={handleClose}
         className={classes.left}
       >
-        {/* <DeleteIcon
-                      onClick={() => dispatch(deleteProject(item.id))}
-                    /> */}
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
+          <DeleteIcon />
+          Delete Project
+        </MenuItem>
+        <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
+          <EditSharpIcon />
+          Edit Project
+        </MenuItem>
+        <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
+          <FavoriteBorderSharpIcon />
+          Add to favorites
+        </MenuItem>
       </Menu>
     </div>
   )
