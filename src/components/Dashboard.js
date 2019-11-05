@@ -17,7 +17,8 @@ import { useSelector, useDispatch } from "react-redux"
 import {
   getProjects,
   deleteProject,
-  toggleProjectModal
+  toggleProjectModal,
+  setActiveProject
 } from "../store/actions/projectAction"
 import { getTaskQuery } from "../store/actions/taskAction"
 import DeleteIcon from "@material-ui/icons/Delete"
@@ -68,10 +69,13 @@ const sidebar = [
 export default function DashBoard() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const [active, setActive] = useState("Inbox")
-  const { projects, isProjectModal, isProjectLoading } = useSelector(
-    state => state.projectReducer
-  )
+  // const [active, setActive] = useState("Inbox")
+  const {
+    projects,
+    isProjectModal,
+    isProjectLoading,
+    activeProject
+  } = useSelector(state => state.projectReducer)
   const { taskQuery, isTaskLoading } = useSelector(state => state.taskReducer)
   const addProject = (
     <>
@@ -85,10 +89,8 @@ export default function DashBoard() {
     dispatch(getProjects())
   }, [])
   useEffect(() => {
-    console.log("active", active)
-
-    dispatch(getTaskQuery(active))
-  }, [active])
+    dispatch(getTaskQuery(activeProject))
+  }, [activeProject])
 
   return (
     <div className={classes.root}>
@@ -107,9 +109,7 @@ export default function DashBoard() {
             <ListItem
               button
               key={item.name}
-              onClick={() => {
-                setActive(item.name)
-              }}
+              onClick={() => dispatch(setActiveProject(item.name))}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name} />
@@ -131,9 +131,7 @@ export default function DashBoard() {
               <ListItem
                 button
                 key={item.id}
-                onClick={() => {
-                  setActive(item.name)
-                }}
+                onClick={() => dispatch(setActiveProject(item.name))}
               >
                 <ListItemIcon>
                   <FiberManualRecordIcon style={{ color: `${item.color}` }} />
@@ -159,8 +157,11 @@ export default function DashBoard() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <h2>{active}</h2>
-        <p>new added tasks here</p>
+        <h2>{activeProject}</h2>
+
+        {!taskQuery.length && (
+          <ListItem className={classes.noContent}>You have no task</ListItem>
+        )}
         {isTaskLoading ? (
           <p>Loading ...</p>
         ) : (

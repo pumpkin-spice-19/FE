@@ -9,11 +9,13 @@ import {
   ADD_PROJECT_START,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAILURE,
-  DELETE_PROJECT_START
+  DELETE_PROJECT_START,
+  SET_ACTIVE_PROJECT
 } from "../actions/projectAction"
 
 const initialState = {
   projects: [],
+  activeProject: "Inbox",
   isProjectLoading: false,
   isProjectModal: false,
   quickAddModal: false
@@ -26,6 +28,12 @@ export default function projectReducer(state = initialState, action) {
       return {
         ...state,
         isProjectModal: !state.isProjectModal
+      }
+    // ----------------- TOGGLER PROJECT MODAL -----------------
+    case SET_ACTIVE_PROJECT:
+      return {
+        ...state,
+        activeProject: action.payload
       }
     // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
     case TOGGLE_QUICKTASK_MODAL:

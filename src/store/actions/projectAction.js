@@ -15,6 +15,15 @@ export const toggleQuickAddModal = () => {
   }
 }
 
+// -------------- ACTIVE PROJECT --------------
+export const SET_ACTIVE_PROJECT = "SET_ACTIVE_PROJECT"
+export const setActiveProject = project => {
+  return {
+    type: SET_ACTIVE_PROJECT,
+    payload: project
+  }
+}
+
 const URL = `https://letzdo-it-2019.herokuapp.com/api/project`
 // -------------- GET PROJECTS --------------
 export const GET_PROJECT_START = "GET_PROJECT_START"

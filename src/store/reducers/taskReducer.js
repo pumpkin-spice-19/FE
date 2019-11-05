@@ -1,7 +1,10 @@
 import {
   GET_TASKQUERY_START,
   GET_TASKQUERY_SUCCESS,
-  GET_TASKQUERY_FAILURE
+  GET_TASKQUERY_FAILURE,
+  ADD_TASK_START,
+  ADD_TASK_SUCCESS,
+  ADD_TASK_FAILURE
 } from "../actions/taskAction"
 
 const initialState = {
@@ -11,7 +14,7 @@ const initialState = {
 
 export default function taskReducer(state = initialState, action) {
   switch (action.type) {
-    // ----------------- GET_TOP_RATED -----------------
+    // ----------------- GET TASK -----------------
     case GET_TASKQUERY_START:
       return {
         ...state,
@@ -24,6 +27,23 @@ export default function taskReducer(state = initialState, action) {
         isTaskLoading: false
       }
     case GET_TASKQUERY_FAILURE:
+      return {
+        ...state,
+        isTaskLoading: false,
+        errors: action.payload
+      }
+    // ----------------- ADD TASK -----------------
+    case ADD_TASK_START:
+      return {
+        ...state,
+        isTaskLoading: true
+      }
+    case ADD_TASK_SUCCESS:
+      return {
+        ...state,
+        isTaskLoading: false
+      }
+    case ADD_TASK_FAILURE:
       return {
         ...state,
         isTaskLoading: false,

@@ -14,6 +14,7 @@ import { addProject } from "../store/actions/projectAction"
 import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import PaperSheet from "./PaperSheet"
+import { addTaskAction } from "../store/actions/taskAction"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 export default function AddTask({ handleClose }) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { projects } = useSelector(state => state.projectReducer)
+  const { projects, activeProject } = useSelector(state => state.projectReducer)
   const [project, setProject] = useState({
     task: "",
     projectName: ""
@@ -48,8 +49,8 @@ export default function AddTask({ handleClose }) {
       task: project.task,
       projectName: project.projectName
     }
-    console.log(newProject)
-    // dispatch(addProject(newProject))
+    console.log(project)
+    dispatch(addTaskAction(newProject, activeProject))
     // reset form
     setProject({ task: "", projectName: "" })
   }
@@ -85,6 +86,7 @@ export default function AddTask({ handleClose }) {
         <FormControl className={classes.formControl}>
           <InputLabel>Project name</InputLabel>
           <Select
+            className={classes.formControl}
             value={project.projectName}
             onChange={handleChange("projectName")}
           >
@@ -94,7 +96,7 @@ export default function AddTask({ handleClose }) {
               </MenuItem>
             ))}
             {projects &&
-              projects.map((item, index) => (
+              projects.map(item => (
                 <MenuItem key={item.id} value={item.name}>
                   {item.name}
                 </MenuItem>
