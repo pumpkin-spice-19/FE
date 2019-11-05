@@ -26,6 +26,7 @@ import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
 import AddTask from "./AddTask"
 import { TaskListsContainer } from "./TaskListsContainer"
+import ControlledExpansionPanels from "./ControlledExpansionPanels"
 
 const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
@@ -44,12 +45,18 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    padding: theme.spacing(1)
   },
   toolbar: theme.mixins.toolbar,
   noContent: {
     textAlign: "center",
     color: "#9E9E9E"
+  },
+  listItem: {
+    height: "40px"
+  },
+  marginRight: {
+    marginRight: "10px"
   }
 }))
 const sidebar = [
@@ -69,7 +76,6 @@ const sidebar = [
 export default function DashBoard() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  // const [active, setActive] = useState("Inbox")
   const {
     projects,
     isProjectModal,
@@ -110,51 +116,69 @@ export default function DashBoard() {
               button
               key={item.name}
               onClick={() => dispatch(setActiveProject(item.name))}
+              className={classes.listItem}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.name} />
+              <p className={classes.marginRight}>{item.icon}</p>
+              <p>{item.name}</p>
             </ListItem>
           ))}
         </List>
         <Divider />
-        <List>
-          {!projects.length && (
-            <ListItem className={classes.noContent}>
-              You have no projects
-            </ListItem>
-          )}
-          {isProjectLoading ? (
-            <p>loading ...</p>
-          ) : (
-            projects &&
-            projects.map((item, index) => (
-              <ListItem
-                button
-                key={item.id}
-                onClick={() => dispatch(setActiveProject(item.name))}
-              >
-                <ListItemIcon>
-                  <FiberManualRecordIcon style={{ color: `${item.color}` }} />
-                </ListItemIcon>
-                <ListItemText primary={item.name} />
-                <DeleteIcon onClick={() => dispatch(deleteProject(item.id))} />
+        <ControlledExpansionPanels>
+          <List>
+            {!projects.length && (
+              <ListItem className={classes.noContent}>
+                You have no projects
               </ListItem>
-            ))
-          )}
-          <SimpleModal
-            content={addProject}
-            toggleHandler={() => dispatch(toggleProjectModal())}
-            state={isProjectModal}
-          >
-            <ListItem button key="Add Project">
-              <ListItemIcon>
-                <AddIcon style={{ color: "red" }} />
-              </ListItemIcon>
-              <ListItemText primary="Add Project" />
-            </ListItem>
-          </SimpleModal>
-        </List>
+            )}
+            {isProjectLoading ? (
+              <ListItem button className={classes.listItem}>
+                <p>loading ...</p>
+              </ListItem>
+            ) : (
+              projects &&
+              projects.map((item, index) => (
+                <ListItem
+                  button
+                  key={item.id}
+                  onClick={() => dispatch(setActiveProject(item.name))}
+                  className={classes.listItem}
+                >
+                  <p>
+                    <FiberManualRecordIcon
+                      className={classes.marginRight}
+                      style={{ color: `${item.color}`, fontSize: "1rem" }}
+                    />
+                  </p>
+                  <p>{item.name}</p>
+                  <p>
+                    <DeleteIcon
+                      onClick={() => dispatch(deleteProject(item.id))}
+                    />
+                  </p>
+                </ListItem>
+              ))
+            )}
+            <SimpleModal
+              content={addProject}
+              toggleHandler={() => dispatch(toggleProjectModal())}
+              state={isProjectModal}
+            >
+              <ListItem button key="Add Project">
+                <p className={classes.marginRight}>
+                  <AddIcon
+                    style={{ color: "red" }}
+                    className={classes.marginRight}
+                  />
+                </p>
+                <p>Add Project</p>
+              </ListItem>
+            </SimpleModal>
+          </List>
+        </ControlledExpansionPanels>
       </Drawer>
+
+      {/* TASK CONTENT */}
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <h2>{activeProject}</h2>
