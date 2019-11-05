@@ -36,3 +36,19 @@ export const addTaskAction = (data, query) => async dispatch => {
     dispatch({ type: ADD_TASK_FAILURE, payload: error })
   }
 }
+// -------------- DELETE TASKS --------------
+export const DELETE_TASK_START = "DELETE_TASK_START"
+export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS"
+export const DELETE_TASK_FAILURE = "DELETE_TASK_FAILURE"
+
+export const deleteTask = (id, query) => async dispatch => {
+  try {
+    dispatch({ type: DELETE_TASK_START })
+    await axios.delete(`${URL}/${id}`)
+
+    dispatch({ type: DELETE_TASK_SUCCESS })
+    getTaskQuery(query)(dispatch)
+  } catch (error) {
+    dispatch({ type: DELETE_TASK_FAILURE, payload: error })
+  }
+}

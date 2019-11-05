@@ -15,6 +15,7 @@ import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import PaperSheet from "./PaperSheet"
 import { addTaskAction } from "../store/actions/taskAction"
+import moment from "moment"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,13 +44,17 @@ export default function AddTask({ handleClose }) {
   const handleChange = name => e => {
     setProject({ ...project, [name]: e.target.value })
   }
+
   const handleSubmit = e => {
     e.preventDefault()
+
     const newProject = {
       task: project.task,
-      projectName: project.projectName
+      projectName: project.projectName,
+      date: moment().format("DD/MM/YYYY")
     }
-    console.log(project)
+
+    // 05/11/2019
     dispatch(addTaskAction(newProject, activeProject))
     // reset form
     setProject({ task: "", projectName: "" })
@@ -65,6 +70,7 @@ export default function AddTask({ handleClose }) {
       name: "Next 7 days"
     }
   ]
+
   return (
     <PaperSheet>
       <form
