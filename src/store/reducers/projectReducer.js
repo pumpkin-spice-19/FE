@@ -2,20 +2,17 @@ import {
   TOGGLE_PROJECT_MODAL,
   TOGGLE_SIDECARD,
   TOGGLE_QUICKTASK_MODAL,
-  GET_PROJECT_START,
-  GET_PROJECT_SUCCESS,
-  GET_PROJECT_FAILURE,
-  ADD_PROJECT_SUCCESS,
-  ADD_PROJECT_FAILURE,
-  ADD_PROJECT_START,
-  DELETE_PROJECT_SUCCESS,
-  DELETE_PROJECT_FAILURE,
-  DELETE_PROJECT_START,
-  SET_ACTIVE_PROJECT
+  SET_ACTIVE_PROJECT,
+  ADD_PROJECT
 } from "../actions/projectAction"
+import uuidv4 from "uuid/v4"
 
 const initialState = {
-  projects: [],
+  projects: [
+    { id: uuidv4(), name: "Finish", color: "#A2A2D0", fav: false },
+    { id: uuidv4(), name: "Project", color: "#6699CC", fav: false },
+    { id: uuidv4(), name: "By this weeked", color: "#7366BD", fav: false }
+  ],
   activeProject: "Inbox",
   isProjectLoading: false,
   isProjectModal: false,
@@ -49,58 +46,17 @@ export default function projectReducer(state = initialState, action) {
         ...state,
         quickAddModal: !state.quickAddModal
       }
-    // ----------------- GET_TOP_RATED -----------------
-    case GET_PROJECT_START:
-      return {
-        ...state,
-        isProjectLoading: true
-      }
-    case GET_PROJECT_SUCCESS:
-      return {
-        ...state,
-        projects: action.payload,
-        isProjectLoading: false
-      }
-    case GET_PROJECT_FAILURE:
-      return {
-        ...state,
-        isProjectLoading: false,
-        errors: action.payload
-      }
     // ----------------- ADD PROJECT -----------------
-    case ADD_PROJECT_START:
+    case ADD_PROJECT:
       return {
         ...state,
-        isProjectLoading: true
-      }
-    case ADD_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isProjectLoading: false,
+        projects: [...state.projects, action.newProject],
         isProjectModal: !state.isProjectModal
       }
-    case ADD_PROJECT_FAILURE:
+    case "DELETE_PROJECT":
       return {
         ...state,
-        isProjectLoading: false,
-        errors: action.payload
-      }
-    // ----------------- DELETE PROJECT -----------------
-    case DELETE_PROJECT_START:
-      return {
-        ...state,
-        isProjectLoading: true
-      }
-    case DELETE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isProjectLoading: false
-      }
-    case DELETE_PROJECT_FAILURE:
-      return {
-        ...state,
-        isProjectLoading: false,
-        errors: action.payload
+        projects: state.projects.filter(project => project.id !== action.id)
       }
 
     // ---------------------- RETURN STATE ----------------------

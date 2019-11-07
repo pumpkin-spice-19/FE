@@ -15,15 +15,14 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import SimpleModal from "./SimpleModal"
 import { useSelector, useDispatch } from "react-redux"
 import {
-  getProjects,
   toggleProjectModal,
   setActiveProject
 } from "../store/actions/projectAction"
+import { TaskListsContainer } from "./TaskListsContainer"
 import { getTaskQuery } from "../store/actions/taskAction"
 import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
 import AddTask from "./AddTask"
-import { TaskListsContainer } from "./TaskListsContainer"
 import ControlledExpansionPanels from "./ControlledExpansionPanels"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 
@@ -92,12 +91,9 @@ const sidebar = [
 export default function DashBoard() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const {
-    projects,
-    isProjectModal,
-    isProjectLoading,
-    activeProject
-  } = useSelector(state => state.projectReducer)
+  const { projects, isProjectModal, activeProject } = useSelector(
+    state => state.projectReducer
+  )
   const { taskQuery, isTaskLoading } = useSelector(state => state.taskReducer)
   const addProject = (
     <>
@@ -107,9 +103,6 @@ export default function DashBoard() {
     </>
   )
 
-  useEffect(() => {
-    dispatch(getProjects())
-  }, [])
   useEffect(() => {
     dispatch(getTaskQuery(activeProject))
   }, [activeProject])
@@ -147,8 +140,7 @@ export default function DashBoard() {
                 You have no projects
               </ListItem>
             )}
-            {
-              projects &&
+            {projects &&
               projects.map((item, index) => (
                 <ListItem
                   button
@@ -170,8 +162,7 @@ export default function DashBoard() {
                     </SideMenu>
                   </span>
                 </ListItem>
-              ))
-            )}
+              ))}
             <SimpleModal
               content={addProject}
               toggleHandler={() => dispatch(toggleProjectModal())}
@@ -196,11 +187,8 @@ export default function DashBoard() {
         {!taskQuery.length && (
           <ListItem className={classes.noContent}>You have no task</ListItem>
         )}
-        {isTaskLoading ? (
-          <p>Loading ...</p>
-        ) : (
-          <TaskListsContainer tasks={taskQuery} />
-        )}
+        <TaskListsContainer tasks={taskQuery} />
+
         <div>
           <AddIcon className={classes.cross} />
           <p>Add Tasks</p>

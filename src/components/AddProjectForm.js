@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux"
 import { addProject } from "../store/actions/projectAction"
 import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
+import uuidv4 from "uuid/v4"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -48,7 +49,8 @@ export default function AddProjectForm({ handleClose }) {
     const newProject = {
       color: project.color,
       fav: check.checked,
-      name: project.name
+      name: project.name,
+      id: uuidv4()
     }
     dispatch(addProject(newProject))
     setProject({ name: "", color: "" })
