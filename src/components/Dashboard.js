@@ -94,7 +94,7 @@ export default function DashBoard() {
   const { projects, isProjectModal, activeProject } = useSelector(
     state => state.projectReducer
   )
-  const { taskQuery, isTaskLoading } = useSelector(state => state.taskReducer)
+  const { taskQuery } = useSelector(state => state.taskReducer)
   const addProject = (
     <>
       <h2>Add Project</h2>
@@ -104,8 +104,8 @@ export default function DashBoard() {
   )
 
   useEffect(() => {
-    dispatch(getTaskQuery(activeProject))
-  }, [activeProject])
+    dispatch(setActiveProject("Inbox"))
+  }, [])
 
   return (
     <div className={classes.root}>
@@ -184,9 +184,6 @@ export default function DashBoard() {
         <div className={classes.toolbar} />
         <h2>{activeProject}</h2>
 
-        {!taskQuery.length && (
-          <ListItem className={classes.noContent}>You have no task</ListItem>
-        )}
         <TaskListsContainer tasks={taskQuery} />
 
         <div>

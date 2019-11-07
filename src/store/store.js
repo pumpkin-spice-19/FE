@@ -19,7 +19,9 @@ const store = createStore(
 store.subscribe(
   throttle(() => {
     saveState({
-      projectReducer: { projects: store.getState().projectReducer.projects }
+      projectReducer: { projects: store.getState().projectReducer.projects },
+      taskReducer: store.getState().taskReducer
+      // projectReducer: store.getState().projectReducer
     })
   }, 1000)
 )

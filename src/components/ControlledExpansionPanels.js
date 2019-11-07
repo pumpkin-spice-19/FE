@@ -1,7 +1,6 @@
-import React from "react"
+import React, { useState } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
 import Typography from "@material-ui/core/Typography"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
@@ -10,19 +9,15 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: "100%"
   }
-  // heading: {
-  //   fontSize: theme.typography.pxToRem(15),
-  //   flexBasis: "33.33%",
-  //   flexShrink: 0
-  // }
 }))
 
 export default function ControlledExpansionPanels({ children }) {
   const classes = useStyles()
-  const [expanded, setExpanded] = React.useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false)
+    console.log(isExpanded ? panel : false)
   }
 
   return (
@@ -34,7 +29,6 @@ export default function ControlledExpansionPanels({ children }) {
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
-          id="panel1bh-header"
         >
           <Typography className={classes.heading}>Projects</Typography>
         </ExpansionPanelSummary>

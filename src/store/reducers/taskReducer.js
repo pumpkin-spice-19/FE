@@ -1,24 +1,31 @@
-import { ADD_PROJECT, DELETE_PROJECT } from "../actions/taskAction"
+import { ADD_TASK, DELETE_TASK } from "../actions/taskAction"
+import uuidv4 from "uuid/v4"
+import moment from "moment"
 
 const initialState = {
-  taskQuery: [],
-  isTaskLoading: false
+  taskQuery: [
+    {
+      date: moment().format("DD/MM/YYYY"),
+      id: uuidv4(),
+      projectName: "Inbox",
+      task: "test"
+    }
+  ]
 }
 
 export default function taskReducer(state = initialState, action) {
   switch (action.type) {
-    // ----------------- ADD PROJECT -----------------
-    case ADD_PROJECT:
+    // ----------------- ADD TASK -----------------
+    case ADD_TASK:
       return {
         ...state,
-        projects: [...state.projects, action.newProject],
-        isProjectModal: !state.isProjectModal
+        taskQuery: [...state.taskQuery, action.newTask]
       }
     // ----------------- DELETE PROJECT -----------------
-    case DELETE_PROJECT:
+    case DELETE_TASK:
       return {
         ...state,
-        projects: state.projects.filter(project => project.id !== action.id)
+        taskQuery: state.taskQuery.filter(task => task.id !== action.id)
       }
 
     // ---------------------- RETURN STATE ----------------------

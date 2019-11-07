@@ -14,8 +14,9 @@ import { addProject } from "../store/actions/projectAction"
 import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import PaperSheet from "./PaperSheet"
-import { addTaskAction } from "../store/actions/taskAction"
+import { addTask } from "../store/actions/taskAction"
 import moment from "moment"
+import uuidv4 from "uuid/v4"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -37,27 +38,26 @@ export default function AddTask({ handleClose }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const { projects, activeProject } = useSelector(state => state.projectReducer)
-  const [project, setProject] = useState({
+  const [stateTask, setStateTask] = useState({
     task: "",
     projectName: ""
   })
   const handleChange = name => e => {
-    setProject({ ...project, [name]: e.target.value })
+    setStateTask({ ...stateTask, [name]: e.target.value })
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-
-    const newProject = {
-      task: project.task,
-      projectName: project.projectName,
-      date: moment().format("DD/MM/YYYY")
+    const newTask = {
+      task: stateTask.task,
+      projectName: stateTask.projectName || activeProject,
+      date: moment().format("DD/MM/YYYY"),
+      id: uuidv4()
     }
-
     // 05/11/2019
-    dispatch(addTaskAction(newProject, activeProject))
+    dispatch(addTask(newTask))
     // reset form
-    setProject({ task: "", projectName: "" })
+    setStateTask({ task: "", projectName: "" })
   }
   const defaultProject = [
     {
@@ -83,7 +83,7 @@ export default function AddTask({ handleClose }) {
           id="task-name"
           label="task name"
           className={classes.textField}
-          value={project.task}
+          value={stateTask.task}
           onChange={handleChange("task")}
           margin="normal"
           variant="outlined"
@@ -93,7 +93,7 @@ export default function AddTask({ handleClose }) {
           <InputLabel>Project name</InputLabel>
           <Select
             className={classes.formControl}
-            value={project.projectName}
+            value={stateTask.projectName}
             onChange={handleChange("projectName")}
           >
             {defaultProject.map((item, index) => (
@@ -123,7 +123,7 @@ export default function AddTask({ handleClose }) {
           color="secondary"
           className={classes.button}
           type="submit"
-          disabled={!project.task}
+          disabled={!stateTask.task}
         >
           Add
         </Button>
