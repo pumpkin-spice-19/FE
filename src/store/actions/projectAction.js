@@ -7,13 +7,6 @@ export const toggleProjectModal = () => {
     type: TOGGLE_PROJECT_MODAL
   }
 }
-// -------------- TOGGLE QUICK ADD TASK MODAL --------------
-export const TOGGLE_QUICKTASK_MODAL = "TOGGLE_QUICKTASK_MODAL"
-export const toggleQuickAddModal = () => {
-  return {
-    type: TOGGLE_QUICKTASK_MODAL
-  }
-}
 // -------------- TOGGLE PROJECT SIDE CARD --------------
 export const TOGGLE_SIDECARD = "TOGGLE_SIDECARD"
 export const toggleSideCard = () => {

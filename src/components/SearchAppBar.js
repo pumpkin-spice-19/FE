@@ -12,7 +12,7 @@ import SimpleModal from "./SimpleModal"
 import Divider from "@material-ui/core/Divider"
 import QuickAddTask from "./QuickAddTask"
 import { useSelector, useDispatch } from "react-redux"
-import { toggleQuickAddModal } from "../store/actions/projectAction"
+import { toggleQuickAddModal } from "../store/actions/taskAction"
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 export default function SearchAppBar() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { quickAddModal } = useSelector(state => state.projectReducer)
+  const { quickAddModal } = useSelector(state => state.taskReducer)
   const addTask = (
     <>
       <h2>Quick Add Task</h2>

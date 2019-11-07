@@ -1,7 +1,6 @@
 import {
   TOGGLE_PROJECT_MODAL,
   TOGGLE_SIDECARD,
-  TOGGLE_QUICKTASK_MODAL,
   SET_ACTIVE_PROJECT,
   ADD_PROJECT,
   DELETE_PROJECT
@@ -17,7 +16,6 @@ const initialState = {
   activeProject: "Inbox",
   isProjectLoading: false,
   isProjectModal: false,
-  quickAddModal: false,
   isSideCard: false
 }
 
@@ -40,12 +38,6 @@ export default function projectReducer(state = initialState, action) {
       return {
         ...state,
         activeProject: action.payload
-      }
-    // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
-    case TOGGLE_QUICKTASK_MODAL:
-      return {
-        ...state,
-        quickAddModal: !state.quickAddModal
       }
     // ----------------- ADD PROJECT -----------------
     case ADD_PROJECT:

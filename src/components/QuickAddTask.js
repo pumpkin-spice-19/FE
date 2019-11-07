@@ -10,9 +10,12 @@ import FormHelperText from "@material-ui/core/FormHelperText"
 import FormControl from "@material-ui/core/FormControl"
 import Select from "@material-ui/core/Select"
 import { useDispatch, useSelector } from "react-redux"
-import { addProject } from "../store/actions/projectAction"
 import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
+import PaperSheet from "./PaperSheet"
+import { addTask, toggleQuickAddModal } from "../store/actions/taskAction"
+import moment from "moment"
+import uuidv4 from "uuid/v4"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -33,24 +36,29 @@ const useStyles = makeStyles(theme => ({
 export default function QuickAddTask({ handleClose }) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { projects } = useSelector(state => state.projectReducer)
-  const [project, setProject] = useState({
+  const { projects, activeProject } = useSelector(state => state.projectReducer)
+  const [stateTask, setStateTask] = useState({
     task: "",
     projectName: ""
   })
   const handleChange = name => e => {
-    setProject({ ...project, [name]: e.target.value })
+    setStateTask({ ...stateTask, [name]: e.target.value })
   }
+
   const handleSubmit = e => {
     e.preventDefault()
-    const newProject = {
-      task: project.task,
-      projectName: project.projectName
+    const newTask = {
+      task: stateTask.task,
+      projectName: stateTask.projectName || activeProject,
+      date: moment().format("DD/MM/YYYY"),
+      id: uuidv4()
     }
-    console.log(newProject)
-    // dispatch(addProject(newProject))
+    // 05/11/2019
+    dispatch(addTask(newTask))
+    // close modal
+    dispatch(toggleQuickAddModal())
     // reset form
-    setProject({ task: "", projectName: "" })
+    setStateTask({ task: "", projectName: "" })
   }
   const defaultProject = [
     {
@@ -63,19 +71,20 @@ export default function QuickAddTask({ handleClose }) {
       name: "Next 7 days"
     }
   ]
+
   return (
-    <form
-      className={classes.container}
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
-      <div>
+    <PaperSheet>
+      <form
+        className={classes.container}
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
         <TextField
           id="task-name"
           label="task name"
           className={classes.textField}
-          value={project.task}
+          value={stateTask.task}
           onChange={handleChange("task")}
           margin="normal"
           variant="outlined"
@@ -84,7 +93,8 @@ export default function QuickAddTask({ handleClose }) {
         <FormControl className={classes.formControl}>
           <InputLabel>Project name</InputLabel>
           <Select
-            value={project.projectName}
+            className={classes.formControl}
+            value={stateTask.projectName}
             onChange={handleChange("projectName")}
           >
             {defaultProject.map((item, index) => (
@@ -93,32 +103,32 @@ export default function QuickAddTask({ handleClose }) {
               </MenuItem>
             ))}
             {projects &&
-              projects.map((item, index) => (
+              projects.map(item => (
                 <MenuItem key={item.id} value={item.name}>
                   {item.name}
                 </MenuItem>
               ))}
           </Select>
         </FormControl>
-      </div>
 
-      <Divider />
-      <Button
-        variant="contained"
-        className={classes.button}
-        onClick={handleClose}
-      >
-        Cancel
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        className={classes.button}
-        type="submit"
-        disabled={!project.task}
-      >
-        Add
-      </Button>
-    </form>
+        <Divider />
+        <Button
+          variant="contained"
+          className={classes.button}
+          onClick={handleClose}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          type="submit"
+          disabled={!stateTask.task}
+        >
+          Add
+        </Button>
+      </form>
+    </PaperSheet>
   )
 }
