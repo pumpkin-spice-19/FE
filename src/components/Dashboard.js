@@ -147,11 +147,7 @@ export default function DashBoard() {
                 You have no projects
               </ListItem>
             )}
-            {isProjectLoading ? (
-              <ListItem button className={classes.listItem}>
-                <p>loading ...</p>
-              </ListItem>
-            ) : (
+            {
               projects &&
               projects.map((item, index) => (
                 <ListItem
