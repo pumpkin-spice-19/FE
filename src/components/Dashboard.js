@@ -147,8 +147,7 @@ export default function DashBoard() {
                 You have no projects
               </ListItem>
             )}
-            {
-              projects &&
+            {projects &&
               projects.map((item, index) => (
                 <ListItem
                   button
@@ -170,8 +169,7 @@ export default function DashBoard() {
                     </SideMenu>
                   </span>
                 </ListItem>
-              ))
-            )}
+              ))}
             <SimpleModal
               content={addProject}
               toggleHandler={() => dispatch(toggleProjectModal())}
