@@ -1,14 +1,4 @@
-import {
-  GET_TASKQUERY_START,
-  GET_TASKQUERY_SUCCESS,
-  GET_TASKQUERY_FAILURE,
-  ADD_TASK_START,
-  ADD_TASK_SUCCESS,
-  ADD_TASK_FAILURE,
-  DELETE_TASK_START,
-  DELETE_TASK_SUCCESS,
-  DELETE_TASK_FAILURE
-} from "../actions/taskAction"
+import { ADD_PROJECT, DELETE_PROJECT } from "../actions/taskAction"
 
 const initialState = {
   taskQuery: [],
@@ -17,58 +7,20 @@ const initialState = {
 
 export default function taskReducer(state = initialState, action) {
   switch (action.type) {
-    // ----------------- GET TASK -----------------
-    case GET_TASKQUERY_START:
+    // ----------------- ADD PROJECT -----------------
+    case ADD_PROJECT:
       return {
         ...state,
-        isTaskLoading: true
+        projects: [...state.projects, action.newProject],
+        isProjectModal: !state.isProjectModal
       }
-    case GET_TASKQUERY_SUCCESS:
+    // ----------------- DELETE PROJECT -----------------
+    case DELETE_PROJECT:
       return {
         ...state,
-        taskQuery: action.payload,
-        isTaskLoading: false
+        projects: state.projects.filter(project => project.id !== action.id)
       }
-    case GET_TASKQUERY_FAILURE:
-      return {
-        ...state,
-        isTaskLoading: false,
-        errors: action.payload
-      }
-    // ----------------- ADD TASK -----------------
-    case ADD_TASK_START:
-      return {
-        ...state,
-        isTaskLoading: true
-      }
-    case ADD_TASK_SUCCESS:
-      return {
-        ...state,
-        isTaskLoading: false
-      }
-    case ADD_TASK_FAILURE:
-      return {
-        ...state,
-        isTaskLoading: false,
-        errors: action.payload
-      }
-    // ----------------- ADD TASK -----------------
-    case DELETE_TASK_START:
-      return {
-        ...state,
-        isTaskLoading: true
-      }
-    case DELETE_TASK_SUCCESS:
-      return {
-        ...state,
-        isTaskLoading: false
-      }
-    case DELETE_TASK_FAILURE:
-      return {
-        ...state,
-        isTaskLoading: false,
-        errors: action.payload
-      }
+
     // ---------------------- RETURN STATE ----------------------
     default:
       return state

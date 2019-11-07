@@ -3,7 +3,8 @@ import {
   TOGGLE_SIDECARD,
   TOGGLE_QUICKTASK_MODAL,
   SET_ACTIVE_PROJECT,
-  ADD_PROJECT
+  ADD_PROJECT,
+  DELETE_PROJECT
 } from "../actions/projectAction"
 import uuidv4 from "uuid/v4"
 
@@ -53,7 +54,8 @@ export default function projectReducer(state = initialState, action) {
         projects: [...state.projects, action.newProject],
         isProjectModal: !state.isProjectModal
       }
-    case "DELETE_PROJECT":
+    // ----------------- DELETE PROJECT -----------------
+    case DELETE_PROJECT:
       return {
         ...state,
         projects: state.projects.filter(project => project.id !== action.id)
