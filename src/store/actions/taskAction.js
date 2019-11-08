@@ -7,7 +7,16 @@ export const toggleQuickAddModal = () => {
     type: TOGGLE_QUICKTASK_MODAL
   }
 }
+// -------------- SEARCH_TASK --------------
+export const SEARCH_TASK = "SEARCH_TASK"
+export const searchTask = data => {
+  return {
+    type: SEARCH_TASK,
+    payload: data
+  }
+}
 
+// -------------- ADD TASK --------------
 export const ADD_TASK = "ADD_TASK"
 export const addTask = newTask => {
   return {
@@ -16,6 +25,7 @@ export const addTask = newTask => {
   }
 }
 
+// -------------- DELETE TASK --------------
 export const DELETE_TASK = "DELETE_TASK"
 export const deleteTask = id => {
   return {

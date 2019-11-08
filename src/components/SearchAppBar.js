@@ -74,9 +74,11 @@ const useStyles = makeStyles(theme => ({
 export default function SearchAppBar() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { quickAddModal } = useSelector(state => state.taskReducer)
+  const { taskQuery, quickAddModal } = useSelector(state => state.taskReducer)
   const { darkMode } = useSelector(state => state.projectReducer)
   const [dark, setDark] = useState(false)
+  const [items, setItems] = useState([])
+  const [initialItems, setInitialItems] = useState([])
   const addTask = (
     <>
       <h2>Quick Add Task</h2>
@@ -90,8 +92,23 @@ export default function SearchAppBar() {
     dispatch(darkModeAction(color))
   }, [dark])
 
+  useEffect(() => {
+    setInitialItems(taskQuery)
+  }, [])
+
   const switchToDarkMode = () => {
     setDark(!dark)
+  }
+
+  const filterList = event => {
+    let updatedList = initialItems
+    updatedList = updatedList.filter(function(item) {
+      return (
+        item.task.toLowerCase().search(event.target.value.toLowerCase()) !== -1
+      )
+    })
+    setItems(updatedList)
+    console.log(updatedList)
   }
   return (
     <AppBar
@@ -114,6 +131,7 @@ export default function SearchAppBar() {
               input: classes.inputInput
             }}
             inputProps={{ "aria-label": "Quick Find" }}
+            onChange={filterList}
           />
         </div>
 

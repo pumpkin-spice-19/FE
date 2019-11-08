@@ -13,6 +13,14 @@ export const TaskListsContainer = ({ tasks }) => {
   if (!count) {
     return <p> You have no task</p>
   }
+  if (activeProject === "Inbox") {
+    return (
+      tasks &&
+      tasks.map(task => {
+        return <Task key={task.id} task={task} />
+      })
+    )
+  }
   return (
     tasks &&
     tasks
