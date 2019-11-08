@@ -95,15 +95,15 @@ const useStyles = makeStyles(theme => ({
 const sidebar = [
   {
     name: "Inbox",
-    icon: <InboxIcon />
+    icon: <InboxIcon style={{ color: "#246fe0" }} />
   },
   {
     name: "Today",
-    icon: <TodayIcon />
+    icon: <TodayIcon style={{ color: "#198527" }} />
   },
   {
     name: "Next 7 days",
-    icon: <EventNoteIcon />
+    icon: <EventNoteIcon style={{ color: "#692fc2" }} />
   }
 ]
 export default function DashBoard() {

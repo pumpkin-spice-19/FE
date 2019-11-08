@@ -18,7 +18,7 @@ import { addTask } from "../store/actions/taskAction"
 import moment from "moment"
 import uuidv4 from "uuid/v4"
 import ControlledOpenSelect from "./ControlledOpenSelect"
-import Grid from "@material-ui/core/Grid"
+import SnackBar from "./SnackBar"
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -44,6 +44,7 @@ export default function AddTask({ toggleAddTask }) {
     task: "",
     projectName: ""
   })
+  const [error, setError] = useState(false)
   const handleChange = name => e => {
     setStateTask({ ...stateTask, [name]: e.target.value })
   }
@@ -51,6 +52,7 @@ export default function AddTask({ toggleAddTask }) {
   const handleSubmit = e => {
     e.preventDefault()
     if (!stateTask.task.length) {
+      setError(!error)
       return
     }
     const newTask = {
@@ -63,6 +65,12 @@ export default function AddTask({ toggleAddTask }) {
     dispatch(addTask(newTask))
     // reset form
     setStateTask({ task: "", projectName: "" })
+  }
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return
+    }
+    setError(false)
   }
   const defaultProject = [
     {
@@ -77,38 +85,45 @@ export default function AddTask({ toggleAddTask }) {
   ]
 
   return (
-    <form
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-      className={classes.formContainer}
-    >
-      <TextField
-        id="task-name"
-        label="task name"
-        className={classes.textField}
-        value={stateTask.task}
-        onChange={handleChange("task")}
-        margin="normal"
-        variant="outlined"
-      />
-      <Button
-        variant="contained"
-        style={{ background: `${darkMode}`, color: "#fdfdfe", marginRight: 10 }}
-        className={classes.button}
-        type="submit"
+    <>
+      <form
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        className={classes.formContainer}
       >
-        Add Task
-      </Button>
-      <Button onClick={toggleAddTask} className={classes.button}>
-        Close
-      </Button>
-      <ControlledOpenSelect
-        projects={projects}
-        defaultProject={defaultProject}
-        stateTask={stateTask}
-        handleChange={handleChange}
-      />
-    </form>
+        <TextField
+          id="task-name"
+          label="task name"
+          className={classes.textField}
+          value={stateTask.task}
+          onChange={handleChange("task")}
+          margin="normal"
+          variant="outlined"
+        />
+        <Button
+          variant="contained"
+          style={{
+            background: `${darkMode}`,
+            color: "#fdfdfe",
+            marginRight: 10
+          }}
+          className={classes.button}
+          type="submit"
+        >
+          Add Task
+        </Button>
+        <Button onClick={toggleAddTask} className={classes.button}>
+          Close
+        </Button>
+        <ControlledOpenSelect
+          projects={projects}
+          defaultProject={defaultProject}
+          stateTask={stateTask}
+          handleChange={handleChange}
+        />
+      </form>
+      <SnackBar error={error} handleClose={handleClose} />
+    </>
   )
 }
