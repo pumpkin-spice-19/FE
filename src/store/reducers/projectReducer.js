@@ -3,7 +3,8 @@ import {
   TOGGLE_SIDECARD,
   SET_ACTIVE_PROJECT,
   ADD_PROJECT,
-  DELETE_PROJECT
+  DELETE_PROJECT,
+  DARK_MODE
 } from "../actions/projectAction"
 import uuidv4 from "uuid/v4"
 
@@ -16,7 +17,8 @@ const initialState = {
   activeProject: "Inbox",
   isProjectLoading: false,
   isProjectModal: false,
-  isSideCard: false
+  isSideCard: false,
+  darkMode: ""
 }
 
 export default function projectReducer(state = initialState, action) {
@@ -26,6 +28,12 @@ export default function projectReducer(state = initialState, action) {
       return {
         ...state,
         isProjectModal: !state.isProjectModal
+      }
+    // ----------------- DARK_MODE -----------------
+    case DARK_MODE:
+      return {
+        ...state,
+        darkMode: action.payload
       }
     // ----------------- TOGGLER PROJECT MODAL -----------------
     case TOGGLE_SIDECARD:

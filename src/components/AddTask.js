@@ -17,27 +17,29 @@ import PaperSheet from "./PaperSheet"
 import { addTask } from "../store/actions/taskAction"
 import moment from "moment"
 import uuidv4 from "uuid/v4"
+import ControlledOpenSelect from "./ControlledOpenSelect"
+import Grid from "@material-ui/core/Grid"
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
     width: "100%"
   },
   formControl: {
-    margin: theme.spacing(1),
     minWidth: "100%"
+  },
+  formContainer: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center"
   }
 }))
 
-export default function AddTask({ handleClose }) {
+export default function AddTask({ toggleAddTask }) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { projects, activeProject } = useSelector(state => state.projectReducer)
+  const { projects, activeProject, darkMode } = useSelector(
+    state => state.projectReducer
+  )
   const [stateTask, setStateTask] = useState({
     task: "",
     projectName: ""
@@ -48,6 +50,9 @@ export default function AddTask({ handleClose }) {
 
   const handleSubmit = e => {
     e.preventDefault()
+    if (!stateTask.task.length) {
+      return
+    }
     const newTask = {
       task: stateTask.task,
       projectName: stateTask.projectName || activeProject,
@@ -72,57 +77,38 @@ export default function AddTask({ handleClose }) {
   ]
 
   return (
-    <PaperSheet>
-      <form
-        className={classes.container}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
+    <form
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit}
+      className={classes.formContainer}
+    >
+      <TextField
+        id="task-name"
+        label="task name"
+        className={classes.textField}
+        value={stateTask.task}
+        onChange={handleChange("task")}
+        margin="normal"
+        variant="outlined"
+      />
+      <Button
+        variant="contained"
+        style={{ background: `${darkMode}`, color: "#fdfdfe", marginRight: 10 }}
+        className={classes.button}
+        type="submit"
       >
-        <TextField
-          id="task-name"
-          label="task name"
-          className={classes.textField}
-          value={stateTask.task}
-          onChange={handleChange("task")}
-          margin="normal"
-          variant="outlined"
-        />
-
-        <FormControl className={classes.formControl}>
-          <InputLabel>Project name</InputLabel>
-          <Select
-            className={classes.formControl}
-            value={stateTask.projectName}
-            onChange={handleChange("projectName")}
-          >
-            {defaultProject.map((item, index) => (
-              <MenuItem key={item.name + index} value={item.name}>
-                {item.name}
-              </MenuItem>
-            ))}
-            {projects &&
-              projects.map(item => (
-                <MenuItem key={item.id} value={item.name}>
-                  {item.name}
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
-
-        <Divider />
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          type="submit"
-        >
-          Add Task
-        </Button>
-        <Button onClick={handleClose} className={classes.button}>
-          Close
-        </Button>
-      </form>
-    </PaperSheet>
+        Add Task
+      </Button>
+      <Button onClick={toggleAddTask} className={classes.button}>
+        Close
+      </Button>
+      <ControlledOpenSelect
+        projects={projects}
+        defaultProject={defaultProject}
+        stateTask={stateTask}
+        handleChange={handleChange}
+      />
+    </form>
   )
 }

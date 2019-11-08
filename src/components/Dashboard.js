@@ -72,6 +72,24 @@ const useStyles = makeStyles(theme => ({
       background: "red",
       borderRadius: "50%"
     }
+  },
+  addBtn: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    cursor: "pointer",
+    "&:hover": {
+      color: "red"
+    }
+  },
+  addBtnText: {
+    color: "gray",
+    cursor: "pointer",
+    alignItems: "center",
+    marginLeft: "10px",
+    "&:hover": {
+      color: "red"
+    }
   }
 }))
 const sidebar = [
@@ -94,6 +112,7 @@ export default function DashBoard() {
   const { projects, isProjectModal, activeProject } = useSelector(
     state => state.projectReducer
   )
+  const [openAddTask, setOpenAddTask] = useState(true)
   const { taskQuery } = useSelector(state => state.taskReducer)
   const addProject = (
     <>
@@ -106,6 +125,10 @@ export default function DashBoard() {
   useEffect(() => {
     dispatch(setActiveProject("Inbox"))
   }, [])
+
+  const toggleAddTask = () => {
+    setOpenAddTask(!openAddTask)
+  }
 
   return (
     <div className={classes.root}>
@@ -186,11 +209,13 @@ export default function DashBoard() {
 
         <TaskListsContainer tasks={taskQuery} />
 
-        <div>
+        <div className={classes.addBtn} onClick={toggleAddTask}>
           <AddIcon className={classes.cross} />
-          <p>Add Tasks</p>
+          <p className={classes.addBtnText}>Add Tasks</p>
         </div>
-        <AddTask />
+        <div hidden={openAddTask}>
+          <AddTask toggleAddTask={toggleAddTask} />
+        </div>
       </main>
     </div>
   )

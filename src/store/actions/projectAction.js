@@ -39,3 +39,11 @@ export const deleteProject = id => {
     id
   }
 }
+
+export const DARK_MODE = "DARK_MODE"
+export const darkModeAction = color => {
+  return {
+    type: DARK_MODE,
+    payload: color
+  }
+}
