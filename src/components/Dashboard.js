@@ -151,7 +151,9 @@ export default function DashBoard() {
               className={classes.listItem}
             >
               <p className={classes.marginRight}>{item.icon}</p>
-              <p>{item.name}</p>
+              <p>
+                {item.name} <span>date</span>
+              </p>
             </ListItem>
           ))}
         </List>

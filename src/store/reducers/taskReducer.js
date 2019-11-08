@@ -1,13 +1,15 @@
 import {
   ADD_TASK,
   DELETE_TASK,
-  TOGGLE_QUICKTASK_MODAL
+  TOGGLE_QUICKTASK_MODAL,
+  SEARCH_TASK
 } from "../actions/taskAction"
 import uuidv4 from "uuid/v4"
 import moment from "moment"
 
 const initialState = {
   quickAddModal: false,
+  queryResult: [],
   taskQuery: [
     {
       date: moment().format("DD/MM/YYYY"),
@@ -38,6 +40,12 @@ export default function taskReducer(state = initialState, action) {
       return {
         ...state,
         quickAddModal: !state.quickAddModal
+      }
+    // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
+    case SEARCH_TASK:
+      return {
+        ...state,
+        queryResult: action.payload
       }
     // ---------------------- RETURN STATE ----------------------
     default:

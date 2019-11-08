@@ -33,7 +33,9 @@ export const Task = ({ task }) => {
         className="radioBtn"
         onClick={() => dispatch(deleteTask(task.id, activeProject))}
       />
-      <p>{task.task}</p>
+      <p>
+        {task.task} <span>{task.date}</span>
+      </p>
     </TaskStyle>
   )
 }

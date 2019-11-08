@@ -12,8 +12,11 @@ import SimpleModal from "./SimpleModal"
 import Divider from "@material-ui/core/Divider"
 import QuickAddTask from "./QuickAddTask"
 import { useSelector, useDispatch } from "react-redux"
-import { toggleQuickAddModal } from "../store/actions/taskAction"
-import { darkModeAction } from "../store/actions/projectAction"
+import { toggleQuickAddModal, searchTask } from "../store/actions/taskAction"
+import {
+  darkModeAction,
+  setActiveProject
+} from "../store/actions/projectAction"
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -77,8 +80,7 @@ export default function SearchAppBar() {
   const { taskQuery, quickAddModal } = useSelector(state => state.taskReducer)
   const { darkMode } = useSelector(state => state.projectReducer)
   const [dark, setDark] = useState(false)
-  const [items, setItems] = useState([])
-  const [initialItems, setInitialItems] = useState([])
+
   const addTask = (
     <>
       <h2>Quick Add Task</h2>
@@ -92,23 +94,18 @@ export default function SearchAppBar() {
     dispatch(darkModeAction(color))
   }, [dark])
 
-  useEffect(() => {
-    setInitialItems(taskQuery)
-  }, [])
-
   const switchToDarkMode = () => {
     setDark(!dark)
   }
-
   const filterList = event => {
-    let updatedList = initialItems
+    dispatch(setActiveProject("Inbox"))
+    let updatedList = taskQuery
     updatedList = updatedList.filter(function(item) {
       return (
         item.task.toLowerCase().search(event.target.value.toLowerCase()) !== -1
       )
     })
-    setItems(updatedList)
-    console.log(updatedList)
+    dispatch(searchTask(updatedList))
   }
   return (
     <AppBar
