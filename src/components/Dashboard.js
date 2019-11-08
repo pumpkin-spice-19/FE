@@ -166,7 +166,7 @@ export default function DashBoard() {
             <SimpleModal
               content={addProject}
               toggleHandler={() => dispatch(toggleProjectModal())}
-              state={isProjectModal}
+              open={isProjectModal}
             >
               <ListItem button key="Add Project">
                 <p className={classes.marginRight}>

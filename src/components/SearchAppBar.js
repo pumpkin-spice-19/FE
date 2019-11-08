@@ -101,7 +101,7 @@ export default function SearchAppBar() {
         <SimpleModal
           content={addTask}
           toggleHandler={() => dispatch(toggleQuickAddModal())}
-          state={quickAddModal}
+          open={quickAddModal}
         >
           <AddIcon />
         </SimpleModal>

@@ -20,7 +20,8 @@ store.subscribe(
   throttle(() => {
     saveState({
       projectReducer: { projects: store.getState().projectReducer.projects },
-      taskReducer: store.getState().taskReducer
+      taskReducer: { taskQuery: store.getState().taskReducer.taskQuery }
+
       // projectReducer: store.getState().projectReducer
     })
   }, 1000)

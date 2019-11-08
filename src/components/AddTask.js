@@ -113,19 +113,14 @@ export default function AddTask({ handleClose }) {
         <Divider />
         <Button
           variant="contained"
-          className={classes.button}
-          onClick={handleClose}
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
           color="secondary"
           className={classes.button}
           type="submit"
-          disabled={!stateTask.task}
         >
-          Add
+          Add Task
+        </Button>
+        <Button onClick={handleClose} className={classes.button}>
+          Close
         </Button>
       </form>
     </PaperSheet>
