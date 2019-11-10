@@ -44,20 +44,35 @@ export default function EditForm() {
   const handleSubmit = event => {
     event.preventDefault()
     const updatedItem = event.target.updatedItem.value
+    if (!updatedItem.length) {
+      setError(!error)
+      return
+    }
     console.log("updatedItem", updatedItem)
 
     dispatch(onUpdateHandle(updatedItem))
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return
+    }
+    setError(false)
+  }
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="updatedItem"
-        className="item"
-        defaultValue={task}
-      />
-      <button className="update-add-item">Update</button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="updatedItem"
+          className="item"
+          defaultValue={task}
+        />
+        <button className="update-add-item">Update</button>
+      </form>
+      <button>cancel</button>
+
+      <SnackBar error={error} handleClose={handleClose} />
+    </>
   )
 }

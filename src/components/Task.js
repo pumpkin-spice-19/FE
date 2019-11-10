@@ -27,7 +27,8 @@ export const Task = ({ task }) => {
   //   "date":"08/11/2019",
   //   "id":"e4833a24-ff84-4849-8c21-3ac78434e47d"
   // }
-  if (edit && task.id === taskId) {
+
+  if (edit === true && task.id === taskId) {
     return <EditForm />
   }
   return (
@@ -36,9 +37,7 @@ export const Task = ({ task }) => {
         className="radioBtn"
         onClick={() => dispatch(deleteTask(task.id, activeProject))}
       />
-      <p>
-        {task.task} <span>{task.date}</span>
-      </p>
+      <p>{task.task}</p>
     </TaskStyle>
   )
 }
