@@ -3,7 +3,6 @@ import TextField from "@material-ui/core/TextField"
 import { makeStyles } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import Divider from "@material-ui/core/Divider"
-import Switches from "./Switches"
 import InputLabel from "@material-ui/core/InputLabel"
 import MenuItem from "@material-ui/core/MenuItem"
 import FormHelperText from "@material-ui/core/FormHelperText"
@@ -15,6 +14,7 @@ import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import uuidv4 from "uuid/v4"
 import SnackBar from "./SnackBar"
+import PaperSheet from "./PaperSheet"
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -74,53 +74,59 @@ export default function AddProjectForm({ handleClose }) {
 
   return (
     <>
-      <form
-        className={classes.container}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
-      >
-        <div>
-          <TextField
-            id="project-name"
-            label="Project name"
-            className={classes.textField}
-            value={project.name}
-            onChange={handleChange("name")}
-            margin="normal"
-            variant="outlined"
-          />
-
-          <FormControl className={classes.formControl}>
-            <InputLabel>Project color</InputLabel>
-            <Select value={project.color} onChange={handleChange("color")}>
-              {colorPallete.map((item, index) => (
-                <MenuItem key={item.hex + index} value={item.hex}>
-                  <FiberManualRecordIcon style={{ color: `${item.hex}` }} />
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-
-        <Divider />
-        <Button
-          variant="contained"
-          className={classes.button}
-          onClick={handleClose}
+      <PaperSheet>
+        <form
+          className={classes.container}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit}
         >
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          type="submit"
-        >
-          Add
-        </Button>
-      </form>
+          <div>
+            <TextField
+              id="project-name"
+              label="Project name"
+              className={classes.textField}
+              value={project.name}
+              onChange={handleChange("name")}
+              margin="normal"
+              variant="outlined"
+            />
+
+            <FormControl className={classes.formControl}>
+              <InputLabel>Project color</InputLabel>
+              <Select value={project.color} onChange={handleChange("color")}>
+                {colorPallete.map((item, index) => (
+                  <MenuItem key={item.hex + index} value={item.hex}>
+                    <FiberManualRecordIcon style={{ color: `${item.hex}` }} />
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+
+          <Divider />
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            type="submit"
+            style={{
+              background: `#da4d43`,
+              color: "#fdfdfe"
+            }}
+          >
+            Add
+          </Button>
+        </form>
+      </PaperSheet>
       <SnackBar
         error={error}
         handleClose={handleCloseError}

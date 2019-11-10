@@ -93,7 +93,7 @@ export default function AddTask({ toggleAddTask }) {
         <Button
           variant="contained"
           style={{
-            background: `${darkMode}`,
+            background: `#da4d43`,
             color: "#fdfdfe",
             marginRight: 10
           }}
