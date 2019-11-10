@@ -43,6 +43,13 @@ export const onEditHandle = (taskId, task) => {
     task
   }
 }
+// -------------- CANCEL_EDIT_HANDLER TASK --------------
+export const CANCEL_EDIT_HANDLER = "CANCEL_EDIT_HANDLER"
+export const cancelEditHandler = () => {
+  return {
+    type: CANCEL_EDIT_HANDLER
+  }
+}
 // -------------- ON_UPDATE_HANDLE TASK --------------
 export const ON_UPDATE_HANDLE = "ON_UPDATE_HANDLE"
 export const onUpdateHandle = data => {

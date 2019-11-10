@@ -14,7 +14,11 @@ import { addProject } from "../store/actions/projectAction"
 import { colorPallete } from "../helper/index"
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import PaperSheet from "./PaperSheet"
-import { addTask, onUpdateHandle } from "../store/actions/taskAction"
+import {
+  addTask,
+  onUpdateHandle,
+  cancelEditHandler
+} from "../store/actions/taskAction"
 import moment from "moment"
 import uuidv4 from "uuid/v4"
 import ControlledOpenSelect from "./ControlledOpenSelect"
@@ -68,9 +72,11 @@ export default function EditForm() {
           className="item"
           defaultValue={task}
         />
-        <button className="update-add-item">Update</button>
+        <button type="submit" className="update-add-item">
+          Update
+        </button>
+        <button onClick={() => dispatch(cancelEditHandler())}>cancel</button>
       </form>
-      <button>cancel</button>
 
       <SnackBar error={error} handleClose={handleClose} />
     </>

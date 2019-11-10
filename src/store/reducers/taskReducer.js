@@ -4,7 +4,8 @@ import {
   TOGGLE_QUICKTASK_MODAL,
   SEARCH_TASK,
   ON_EDIT_HANDLE,
-  ON_UPDATE_HANDLE
+  ON_UPDATE_HANDLE,
+  CANCEL_EDIT_HANDLER
 } from "../actions/taskAction"
 import uuidv4 from "uuid/v4"
 import moment from "moment"
@@ -13,7 +14,6 @@ const initialState = {
   quickAddModal: false,
   edit: false,
   queryResult: [],
-  taskId: "",
   taskId: "",
   taskQuery: [
     {
@@ -58,7 +58,13 @@ export default function taskReducer(state = initialState, action) {
         ...state,
         edit: true,
         taskId: action.taskId,
-        task: action.task
+        task: action.task //title/name
+      }
+    // ----------------- ON_EDIT_HANDLE ---------------
+    case CANCEL_EDIT_HANDLER:
+      return {
+        ...state,
+        edit: false
       }
     // ----------------- ON_UPDATE_HANDLE ---------------
     case ON_UPDATE_HANDLE:
@@ -67,6 +73,7 @@ export default function taskReducer(state = initialState, action) {
         edit: false,
         taskQuery: state.taskQuery.map(item => {
           if (item.id === state.taskId) {
+            // update task
             item["task"] = action.payload
             return item
           }

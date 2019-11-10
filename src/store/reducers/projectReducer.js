@@ -10,9 +10,9 @@ import uuidv4 from "uuid/v4"
 
 const initialState = {
   projects: [
-    { id: uuidv4(), name: "Finish", color: "#A2A2D0", fav: false },
-    { id: uuidv4(), name: "Project", color: "#6699CC", fav: false },
-    { id: uuidv4(), name: "By this weeked", color: "#7366BD", fav: false }
+    { id: uuidv4(), name: "Finish", color: "#A2A2D0" },
+    { id: uuidv4(), name: "Project", color: "#6699CC" },
+    { id: uuidv4(), name: "By this weeked", color: "#7366BD" }
   ],
   activeProject: "Inbox",
   isProjectLoading: false,

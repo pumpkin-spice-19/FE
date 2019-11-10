@@ -89,7 +89,11 @@ const useStyles2 = makeStyles(theme => ({
   }
 }))
 
-export default function SnackBar({ error, handleClose }) {
+export default function SnackBar({
+  error,
+  handleClose,
+  message = "Task Name is required !"
+}) {
   const classes = useStyles2()
 
   return (
@@ -107,7 +111,7 @@ export default function SnackBar({ error, handleClose }) {
           onClose={handleClose}
           variant="error"
           className={classes.margin}
-          message="Task Name is required !"
+          message={message}
         />
       </Snackbar>
     </div>
