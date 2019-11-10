@@ -42,6 +42,7 @@ export const Task = ({ task }) => {
       <RadioButtonUncheckedRoundedIcon
         className="radioBtn"
         // onClick={() => dispatch(deleteTask(task.id, activeProject))}
+        // ADD COMPLETED
       />
       <p className="taskName">{task.task}</p>
       <TaskSideMenu

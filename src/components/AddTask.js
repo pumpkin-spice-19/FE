@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center"
+  },
+  button: {
+    marginTop: "-25px"
   }
 }))
 
@@ -83,7 +86,7 @@ export default function AddTask({ toggleAddTask }) {
       >
         <TextField
           id="task-name"
-          label="task name"
+          // label="task name"
           className={classes.textField}
           value={stateTask.task}
           onChange={handleChange("task")}
@@ -95,7 +98,7 @@ export default function AddTask({ toggleAddTask }) {
           style={{
             background: `#da4d43`,
             color: "#fdfdfe",
-            marginRight: 10
+            marginRight: 5
           }}
           className={classes.button}
           type="submit"

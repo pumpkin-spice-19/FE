@@ -21,6 +21,7 @@ export default function SideMenu({ children, item }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(null)
+
   const handleClick = e => {
     e.preventDefault()
     if (e.nativeEvent.which === 1) {
