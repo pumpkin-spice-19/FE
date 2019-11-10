@@ -60,6 +60,12 @@ export default function QuickAddTask({ handleClose }) {
 
   const handleSubmit = e => {
     e.preventDefault()
+
+    if (!stateTask.task.length) {
+      setError(!error)
+      return
+    }
+
     const newTask = {
       task: stateTask.task,
       projectName: stateTask.projectName || activeProject,

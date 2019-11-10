@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import RadioButtonUncheckedRoundedIcon from "@material-ui/icons/RadioButtonUncheckedRounded"
 import styled from "styled-components"
 import EditForm from "./EditForm"
+import TaskSideMenu from "./TaskSideMenu"
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 
 export const Task = ({ task }) => {
   const dispatch = useDispatch()
@@ -14,11 +16,15 @@ export const Task = ({ task }) => {
     border-bottom: 1px solid #f2f0f0;
     display: flex;
     align-items: center;
-
     .radioBtn {
       color: #bcbcbc;
       cursor: pointer;
       margin-right: 10px;
+    }
+    .taskName {
+      margin-right: auto;
+    }
+    .horizonIcon {
     }
   `
   // {
@@ -32,12 +38,18 @@ export const Task = ({ task }) => {
     return <EditForm />
   }
   return (
-    <TaskStyle onClick={() => dispatch(onEditHandle(task.id, task.task))}>
+    <TaskStyle>
       <RadioButtonUncheckedRoundedIcon
         className="radioBtn"
-        onClick={() => dispatch(deleteTask(task.id, activeProject))}
+        // onClick={() => dispatch(deleteTask(task.id, activeProject))}
       />
-      <p>{task.task}</p>
+      <p className="taskName">{task.task}</p>
+      <TaskSideMenu
+        onEdit={() => dispatch(onEditHandle(task.id, task.task))}
+        onDelete={() => dispatch(deleteTask(task.id, activeProject))}
+      >
+        <MoreHorizIcon className="horizonIcon" />
+      </TaskSideMenu>
     </TaskStyle>
   )
 }

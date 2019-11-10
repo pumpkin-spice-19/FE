@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: "40px"
   }
 }))
-export default function SideMenu({ children, item }) {
+export default function TaskSideMenu({ children, onEdit, onDelete }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -52,15 +52,15 @@ export default function SideMenu({ children, item }) {
         onClose={handleClose}
         className={classes.left}
       >
-        <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
+        <MenuItem onClick={onDelete}>
           <DeleteIcon />
           Delete Project
         </MenuItem>
-        {/* <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
+        <MenuItem onClick={onEdit}>
           <EditSharpIcon />
           Edit Project
         </MenuItem>
-        <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
+        {/* <MenuItem onClick={() => dispatch(deleteProject(item.id))}>
           <FavoriteBorderSharpIcon />
           Add to favorites
         </MenuItem> */}

@@ -26,7 +26,6 @@ import AddTask from "./AddTask"
 import ControlledExpansionPanels from "./ControlledExpansionPanels"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 
-
 import SideMenu from "./SideMenu"
 
 const drawerWidth = 300
@@ -91,6 +90,9 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       color: "red"
     }
+  },
+  horizonIcon: {
+    color: "gray"
   }
 }))
 const sidebar = [
@@ -152,9 +154,7 @@ export default function DashBoard() {
               className={classes.listItem}
             >
               <p className={classes.marginRight}>{item.icon}</p>
-              <p>
-                {item.name}
-              </p>
+              <p>{item.name}</p>
             </ListItem>
           ))}
         </List>
@@ -184,7 +184,7 @@ export default function DashBoard() {
 
                   <span className={classes.mlAuto}>
                     <SideMenu item={item}>
-                      <MoreHorizIcon />
+                      <MoreHorizIcon className={classes.horizonIcon} />
                     </SideMenu>
                   </span>
                 </ListItem>
