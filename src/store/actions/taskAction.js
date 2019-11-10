@@ -33,3 +33,21 @@ export const deleteTask = id => {
     id
   }
 }
+
+// -------------- ON_EDIT_HANDLE TASK --------------
+export const ON_EDIT_HANDLE = "ON_EDIT_HANDLE"
+export const onEditHandle = (taskId, task) => {
+  return {
+    type: ON_EDIT_HANDLE,
+    taskId,
+    task
+  }
+}
+// -------------- ON_UPDATE_HANDLE TASK --------------
+export const ON_UPDATE_HANDLE = "ON_UPDATE_HANDLE"
+export const onUpdateHandle = data => {
+  return {
+    type: ON_UPDATE_HANDLE,
+    payload: data
+  }
+}

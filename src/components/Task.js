@@ -1,12 +1,14 @@
 import React from "react"
-import { deleteTask } from "../store/actions/taskAction"
+import { deleteTask, onEditHandle } from "../store/actions/taskAction"
 import { useDispatch, useSelector } from "react-redux"
 import RadioButtonUncheckedRoundedIcon from "@material-ui/icons/RadioButtonUncheckedRounded"
 import styled from "styled-components"
+import EditForm from "./EditForm"
 
 export const Task = ({ task }) => {
   const dispatch = useDispatch()
   const { activeProject } = useSelector(state => state.projectReducer)
+  const { edit, taskId } = useSelector(state => state.taskReducer)
 
   const TaskStyle = styled.div`
     border-bottom: 1px solid #f2f0f0;
@@ -19,16 +21,17 @@ export const Task = ({ task }) => {
       margin-right: 10px;
     }
   `
-
   // {
   //   "task":"tes",
   //   "projectName":"Inbox",
   //   "date":"08/11/2019",
   //   "id":"e4833a24-ff84-4849-8c21-3ac78434e47d"
   // }
-
+  if (edit && task.id === taskId) {
+    return <EditForm />
+  }
   return (
-    <TaskStyle>
+    <TaskStyle onClick={() => dispatch(onEditHandle(task.id, task.task))}>
       <RadioButtonUncheckedRoundedIcon
         className="radioBtn"
         onClick={() => dispatch(deleteTask(task.id, activeProject))}

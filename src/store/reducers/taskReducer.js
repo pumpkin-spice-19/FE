@@ -2,14 +2,19 @@ import {
   ADD_TASK,
   DELETE_TASK,
   TOGGLE_QUICKTASK_MODAL,
-  SEARCH_TASK
+  SEARCH_TASK,
+  ON_EDIT_HANDLE,
+  ON_UPDATE_HANDLE
 } from "../actions/taskAction"
 import uuidv4 from "uuid/v4"
 import moment from "moment"
 
 const initialState = {
   quickAddModal: false,
+  edit: false,
   queryResult: [],
+  taskId: "",
+  taskId: "",
   taskQuery: [
     {
       date: moment().format("DD/MM/YYYY"),
@@ -46,6 +51,27 @@ export default function taskReducer(state = initialState, action) {
       return {
         ...state,
         queryResult: action.payload
+      }
+    // ----------------- ON_EDIT_HANDLE ---------------
+    case ON_EDIT_HANDLE:
+      return {
+        ...state,
+        edit: true,
+        taskId: action.taskId,
+        task: action.task
+      }
+    // ----------------- ON_UPDATE_HANDLE ---------------
+    case ON_UPDATE_HANDLE:
+      return {
+        ...state,
+        edit: false,
+        taskQuery: state.taskQuery.map(item => {
+          if (item.id === state.taskId) {
+            item["task"] = action.payload
+            return item
+          }
+          return item
+        })
       }
     // ---------------------- RETURN STATE ----------------------
     default:

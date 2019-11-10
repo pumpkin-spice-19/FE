@@ -26,6 +26,7 @@ import AddTask from "./AddTask"
 import ControlledExpansionPanels from "./ControlledExpansionPanels"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 
+
 import SideMenu from "./SideMenu"
 
 const drawerWidth = 300
@@ -152,7 +153,7 @@ export default function DashBoard() {
             >
               <p className={classes.marginRight}>{item.icon}</p>
               <p>
-                {item.name} <span>date</span>
+                {item.name}
               </p>
             </ListItem>
           ))}
