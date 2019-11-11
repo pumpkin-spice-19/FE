@@ -1,54 +1,60 @@
 import axios from "axios"
 
-// -------------- ENDPOINTS --------------
-const URL = `https://letzdo-it-2019.herokuapp.com/api/task`
-
-// -------------- GET QUERY TASKS --------------
-export const GET_TASKQUERY_START = "GET_TASKQUERY_START"
-export const GET_TASKQUERY_SUCCESS = "GET_TASKQUERY_SUCCESS"
-export const GET_TASKQUERY_FAILURE = "GET_TASKQUERY_FAILURE"
-
-// https://letzdo-it-2019.herokuapp.com/api/task?name=First TASKQUERY
-export const getTaskQuery = query => async dispatch => {
-  try {
-    dispatch({ type: GET_TASKQUERY_START })
-    const response = await axios(`${URL}/search?name=${query}`)
-
-    dispatch({ type: GET_TASKQUERY_SUCCESS, payload: response.data })
-  } catch (error) {
-    dispatch({ type: GET_TASKQUERY_FAILURE, payload: error })
+// -------------- TOGGLE QUICK ADD TASK MODAL --------------
+export const TOGGLE_QUICKTASK_MODAL = "TOGGLE_QUICKTASK_MODAL"
+export const toggleQuickAddModal = () => {
+  return {
+    type: TOGGLE_QUICKTASK_MODAL
+  }
+}
+// -------------- SEARCH_TASK --------------
+export const SEARCH_TASK = "SEARCH_TASK"
+export const searchTask = data => {
+  return {
+    type: SEARCH_TASK,
+    payload: data
   }
 }
 
-// -------------- ADD TASKS --------------
-export const ADD_TASK_START = "ADD_TASK_START"
-export const ADD_TASK_SUCCESS = "ADD_TASK_SUCCESS"
-export const ADD_TASK_FAILURE = "ADD_TASK_FAILURE"
-
-export const addTaskAction = (data, query) => async dispatch => {
-  try {
-    dispatch({ type: ADD_TASK_START })
-    await axios.post(URL, data)
-
-    dispatch({ type: ADD_TASK_SUCCESS })
-    getTaskQuery(query)(dispatch)
-  } catch (error) {
-    dispatch({ type: ADD_TASK_FAILURE, payload: error })
+// -------------- ADD TASK --------------
+export const ADD_TASK = "ADD_TASK"
+export const addTask = newTask => {
+  return {
+    type: ADD_TASK,
+    newTask
   }
 }
-// -------------- DELETE TASKS --------------
-export const DELETE_TASK_START = "DELETE_TASK_START"
-export const DELETE_TASK_SUCCESS = "DELETE_TASK_SUCCESS"
-export const DELETE_TASK_FAILURE = "DELETE_TASK_FAILURE"
 
-export const deleteTask = (id, query) => async dispatch => {
-  try {
-    dispatch({ type: DELETE_TASK_START })
-    await axios.delete(`${URL}/${id}`)
+// -------------- DELETE TASK --------------
+export const DELETE_TASK = "DELETE_TASK"
+export const deleteTask = id => {
+  return {
+    type: DELETE_TASK,
+    id
+  }
+}
 
-    dispatch({ type: DELETE_TASK_SUCCESS })
-    getTaskQuery(query)(dispatch)
-  } catch (error) {
-    dispatch({ type: DELETE_TASK_FAILURE, payload: error })
+// -------------- ON_EDIT_HANDLE TASK --------------
+export const ON_EDIT_HANDLE = "ON_EDIT_HANDLE"
+export const onEditHandle = (taskId, task) => {
+  return {
+    type: ON_EDIT_HANDLE,
+    taskId,
+    task
+  }
+}
+// -------------- CANCEL_EDIT_HANDLER TASK --------------
+export const CANCEL_EDIT_HANDLER = "CANCEL_EDIT_HANDLER"
+export const cancelEditHandler = () => {
+  return {
+    type: CANCEL_EDIT_HANDLER
+  }
+}
+// -------------- ON_UPDATE_HANDLE TASK --------------
+export const ON_UPDATE_HANDLE = "ON_UPDATE_HANDLE"
+export const onUpdateHandle = data => {
+  return {
+    type: ON_UPDATE_HANDLE,
+    payload: data
   }
 }

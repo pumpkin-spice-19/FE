@@ -15,15 +15,14 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord"
 import SimpleModal from "./SimpleModal"
 import { useSelector, useDispatch } from "react-redux"
 import {
-  getProjects,
   toggleProjectModal,
   setActiveProject
 } from "../store/actions/projectAction"
+import { TaskListsContainer } from "./TaskListsContainer"
 import { getTaskQuery } from "../store/actions/taskAction"
 import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
 import AddTask from "./AddTask"
-import { TaskListsContainer } from "./TaskListsContainer"
 import ControlledExpansionPanels from "./ControlledExpansionPanels"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 
@@ -73,32 +72,51 @@ const useStyles = makeStyles(theme => ({
       background: "red",
       borderRadius: "50%"
     }
+  },
+  addBtn: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    cursor: "pointer",
+    "&:hover": {
+      color: "red"
+    }
+  },
+  addBtnText: {
+    color: "gray",
+    cursor: "pointer",
+    alignItems: "center",
+    marginLeft: "10px",
+    "&:hover": {
+      color: "red"
+    }
+  },
+  horizonIcon: {
+    color: "gray"
   }
 }))
 const sidebar = [
   {
     name: "Inbox",
-    icon: <InboxIcon />
+    icon: <InboxIcon style={{ color: "#246fe0" }} />
   },
   {
     name: "Today",
-    icon: <TodayIcon />
+    icon: <TodayIcon style={{ color: "#198527" }} />
   },
   {
     name: "Next 7 days",
-    icon: <EventNoteIcon />
+    icon: <EventNoteIcon style={{ color: "#692fc2" }} />
   }
 ]
 export default function DashBoard() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const {
-    projects,
-    isProjectModal,
-    isProjectLoading,
-    activeProject
-  } = useSelector(state => state.projectReducer)
-  const { taskQuery, isTaskLoading } = useSelector(state => state.taskReducer)
+  const { projects, isProjectModal, activeProject } = useSelector(
+    state => state.projectReducer
+  )
+  const [openAddTask, setOpenAddTask] = useState(true)
+  const { taskQuery } = useSelector(state => state.taskReducer)
   const addProject = (
     <>
       <h2>Add Project</h2>
@@ -108,11 +126,12 @@ export default function DashBoard() {
   )
 
   useEffect(() => {
-    dispatch(getProjects())
+    dispatch(setActiveProject("Inbox"))
   }, [])
-  useEffect(() => {
-    dispatch(getTaskQuery(activeProject))
-  }, [activeProject])
+
+  const toggleAddTask = () => {
+    setOpenAddTask(!openAddTask)
+  }
 
   return (
     <div className={classes.root}>
@@ -165,7 +184,7 @@ export default function DashBoard() {
 
                   <span className={classes.mlAuto}>
                     <SideMenu item={item}>
-                      <MoreHorizIcon />
+                      <MoreHorizIcon className={classes.horizonIcon} />
                     </SideMenu>
                   </span>
                 </ListItem>
@@ -173,7 +192,7 @@ export default function DashBoard() {
             <SimpleModal
               content={addProject}
               toggleHandler={() => dispatch(toggleProjectModal())}
-              state={isProjectModal}
+              open={isProjectModal}
             >
               <ListItem button key="Add Project">
                 <p className={classes.marginRight}>
@@ -191,19 +210,15 @@ export default function DashBoard() {
         <div className={classes.toolbar} />
         <h2>{activeProject}</h2>
 
-        {!taskQuery.length && (
-          <ListItem className={classes.noContent}>You have no task</ListItem>
-        )}
-        {isTaskLoading ? (
-          <p>Loading ...</p>
-        ) : (
-          <TaskListsContainer tasks={taskQuery} />
-        )}
-        <div>
+        <TaskListsContainer tasks={taskQuery} />
+
+        <div className={classes.addBtn} onClick={toggleAddTask}>
           <AddIcon className={classes.cross} />
-          <p>Add Tasks</p>
+          <p className={classes.addBtnText}>Add Tasks</p>
         </div>
-        <AddTask />
+        <div hidden={openAddTask}>
+          <AddTask toggleAddTask={toggleAddTask} />
+        </div>
       </main>
     </div>
   )

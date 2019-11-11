@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
@@ -12,7 +12,11 @@ import SimpleModal from "./SimpleModal"
 import Divider from "@material-ui/core/Divider"
 import QuickAddTask from "./QuickAddTask"
 import { useSelector, useDispatch } from "react-redux"
-import { toggleQuickAddModal } from "../store/actions/projectAction"
+import { toggleQuickAddModal, searchTask } from "../store/actions/taskAction"
+import {
+  darkModeAction,
+  setActiveProject
+} from "../store/actions/projectAction"
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -64,13 +68,19 @@ const useStyles = makeStyles(theme => ({
         width: 200
       }
     }
+  },
+  darkModeIcon: {
+    cursor: "pointer"
   }
 }))
 
 export default function SearchAppBar() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { quickAddModal } = useSelector(state => state.projectReducer)
+  const { taskQuery, quickAddModal } = useSelector(state => state.taskReducer)
+  const { darkMode } = useSelector(state => state.projectReducer)
+  const [dark, setDark] = useState(false)
+
   const addTask = (
     <>
       <h2>Quick Add Task</h2>
@@ -78,9 +88,32 @@ export default function SearchAppBar() {
       <QuickAddTask handleClose={() => dispatch(toggleQuickAddModal())} />
     </>
   )
+
+  useEffect(() => {
+    const color = dark ? "#2E3B55" : "#da4d43"
+    dispatch(darkModeAction(color))
+  }, [dark])
+
+  const switchToDarkMode = () => {
+    setDark(!dark)
+  }
+  const filterList = event => {
+    dispatch(setActiveProject("Inbox"))
+    let updatedList = taskQuery
+    updatedList = updatedList.filter(function(item) {
+      return (
+        item.task.toLowerCase().search(event.target.value.toLowerCase()) !== -1
+      )
+    })
+    dispatch(searchTask(updatedList))
+  }
   return (
-    <AppBar position="fixed" className={classes.appBar}>
-      <Toolbar>
+    <AppBar
+      position="fixed"
+      className={classes.appBar}
+      style={{ background: `${darkMode}` }}
+    >
+      <Toolbar variant="dense">
         <Typography className={classes.title} variant="h6" noWrap>
           <CodeIcon />
         </Typography>
@@ -89,24 +122,28 @@ export default function SearchAppBar() {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder="Quick Find"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput
             }}
-            inputProps={{ "aria-label": "search" }}
+            inputProps={{ "aria-label": "Quick Find" }}
+            onChange={filterList}
           />
         </div>
 
         <SimpleModal
           content={addTask}
           toggleHandler={() => dispatch(toggleQuickAddModal())}
-          state={quickAddModal}
+          open={quickAddModal}
         >
           <AddIcon />
         </SimpleModal>
 
-        <Brightness4Icon />
+        <Brightness4Icon
+          onClick={switchToDarkMode}
+          className={classes.darkModeIcon}
+        />
       </Toolbar>
     </AppBar>
   )

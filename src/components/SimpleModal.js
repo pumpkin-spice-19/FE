@@ -32,10 +32,9 @@ export default function SimpleModal({
   children,
   content,
   toggleHandler,
-  state
+  open
 }) {
   const classes = useStyles()
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle)
 
   return (
@@ -46,7 +45,7 @@ export default function SimpleModal({
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        open={state}
+        open={open}
         onClose={toggleHandler}
       >
         <div style={modalStyle} className={classes.paper}>

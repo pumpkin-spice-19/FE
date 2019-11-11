@@ -1,26 +1,24 @@
 import {
   TOGGLE_PROJECT_MODAL,
   TOGGLE_SIDECARD,
-  TOGGLE_QUICKTASK_MODAL,
-  GET_PROJECT_START,
-  GET_PROJECT_SUCCESS,
-  GET_PROJECT_FAILURE,
-  ADD_PROJECT_SUCCESS,
-  ADD_PROJECT_FAILURE,
-  ADD_PROJECT_START,
-  DELETE_PROJECT_SUCCESS,
-  DELETE_PROJECT_FAILURE,
-  DELETE_PROJECT_START,
-  SET_ACTIVE_PROJECT
+  SET_ACTIVE_PROJECT,
+  ADD_PROJECT,
+  DELETE_PROJECT,
+  DARK_MODE
 } from "../actions/projectAction"
+import uuidv4 from "uuid/v4"
 
 const initialState = {
-  projects: [],
+  projects: [
+    { id: uuidv4(), name: "Finish", color: "#A2A2D0" },
+    { id: uuidv4(), name: "Project", color: "#6699CC" },
+    { id: uuidv4(), name: "By this weeked", color: "#7366BD" }
+  ],
   activeProject: "Inbox",
   isProjectLoading: false,
   isProjectModal: false,
-  quickAddModal: false,
-  isSideCard: false
+  isSideCard: false,
+  darkMode: ""
 }
 
 export default function projectReducer(state = initialState, action) {
@@ -30,6 +28,12 @@ export default function projectReducer(state = initialState, action) {
       return {
         ...state,
         isProjectModal: !state.isProjectModal
+      }
+    // ----------------- DARK_MODE -----------------
+    case DARK_MODE:
+      return {
+        ...state,
+        darkMode: action.payload
       }
     // ----------------- TOGGLER PROJECT MODAL -----------------
     case TOGGLE_SIDECARD:
@@ -43,64 +47,18 @@ export default function projectReducer(state = initialState, action) {
         ...state,
         activeProject: action.payload
       }
-    // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
-    case TOGGLE_QUICKTASK_MODAL:
-      return {
-        ...state,
-        quickAddModal: !state.quickAddModal
-      }
-    // ----------------- GET_TOP_RATED -----------------
-    case GET_PROJECT_START:
-      return {
-        ...state,
-        isProjectLoading: true
-      }
-    case GET_PROJECT_SUCCESS:
-      return {
-        ...state,
-        projects: action.payload,
-        isProjectLoading: false
-      }
-    case GET_PROJECT_FAILURE:
-      return {
-        ...state,
-        isProjectLoading: false,
-        errors: action.payload
-      }
     // ----------------- ADD PROJECT -----------------
-    case ADD_PROJECT_START:
+    case ADD_PROJECT:
       return {
         ...state,
-        isProjectLoading: true
-      }
-    case ADD_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isProjectLoading: false,
+        projects: [...state.projects, action.newProject],
         isProjectModal: !state.isProjectModal
       }
-    case ADD_PROJECT_FAILURE:
-      return {
-        ...state,
-        isProjectLoading: false,
-        errors: action.payload
-      }
     // ----------------- DELETE PROJECT -----------------
-    case DELETE_PROJECT_START:
+    case DELETE_PROJECT:
       return {
         ...state,
-        isProjectLoading: true
-      }
-    case DELETE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isProjectLoading: false
-      }
-    case DELETE_PROJECT_FAILURE:
-      return {
-        ...state,
-        isProjectLoading: false,
-        errors: action.payload
+        projects: state.projects.filter(project => project.id !== action.id)
       }
 
     // ---------------------- RETURN STATE ----------------------

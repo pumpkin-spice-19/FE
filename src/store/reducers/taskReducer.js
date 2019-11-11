@@ -1,73 +1,84 @@
 import {
-  GET_TASKQUERY_START,
-  GET_TASKQUERY_SUCCESS,
-  GET_TASKQUERY_FAILURE,
-  ADD_TASK_START,
-  ADD_TASK_SUCCESS,
-  ADD_TASK_FAILURE,
-  DELETE_TASK_START,
-  DELETE_TASK_SUCCESS,
-  DELETE_TASK_FAILURE
+  ADD_TASK,
+  DELETE_TASK,
+  TOGGLE_QUICKTASK_MODAL,
+  SEARCH_TASK,
+  ON_EDIT_HANDLE,
+  ON_UPDATE_HANDLE,
+  CANCEL_EDIT_HANDLER
 } from "../actions/taskAction"
+import uuidv4 from "uuid/v4"
+import moment from "moment"
 
 const initialState = {
-  taskQuery: [],
-  isTaskLoading: false
+  quickAddModal: false,
+  edit: false,
+  queryResult: [],
+  taskId: "",
+  taskQuery: [
+    {
+      date: moment().format("DD/MM/YYYY"),
+      id: uuidv4(),
+      projectName: "Inbox",
+      task: "test"
+    }
+  ]
 }
 
 export default function taskReducer(state = initialState, action) {
   switch (action.type) {
-    // ----------------- GET TASK -----------------
-    case GET_TASKQUERY_START:
-      return {
-        ...state,
-        isTaskLoading: true
-      }
-    case GET_TASKQUERY_SUCCESS:
-      return {
-        ...state,
-        taskQuery: action.payload,
-        isTaskLoading: false
-      }
-    case GET_TASKQUERY_FAILURE:
-      return {
-        ...state,
-        isTaskLoading: false,
-        errors: action.payload
-      }
     // ----------------- ADD TASK -----------------
-    case ADD_TASK_START:
+    case ADD_TASK:
       return {
         ...state,
-        isTaskLoading: true
+        taskQuery: [...state.taskQuery, action.newTask]
       }
-    case ADD_TASK_SUCCESS:
+    // ----------------- DELETE PROJECT -----------------
+    case DELETE_TASK:
       return {
         ...state,
-        isTaskLoading: false
+        taskQuery: state.taskQuery.filter(task => task.id !== action.id)
       }
-    case ADD_TASK_FAILURE:
+
+    // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
+    case TOGGLE_QUICKTASK_MODAL:
       return {
         ...state,
-        isTaskLoading: false,
-        errors: action.payload
+        quickAddModal: !state.quickAddModal
       }
-    // ----------------- ADD TASK -----------------
-    case DELETE_TASK_START:
+    // ----------------- TOGGLER QUICK ADD TASK MODAL -----------------
+    case SEARCH_TASK:
       return {
         ...state,
-        isTaskLoading: true
+        queryResult: action.payload
       }
-    case DELETE_TASK_SUCCESS:
+    // ----------------- ON_EDIT_HANDLE ---------------
+    case ON_EDIT_HANDLE:
       return {
         ...state,
-        isTaskLoading: false
+        edit: true,
+        taskId: action.taskId,
+        task: action.task //title/name
       }
-    case DELETE_TASK_FAILURE:
+    // ----------------- ON_EDIT_HANDLE ---------------
+    case CANCEL_EDIT_HANDLER:
       return {
         ...state,
-        isTaskLoading: false,
-        errors: action.payload
+        edit: false
+      }
+    // ----------------- ON_UPDATE_HANDLE ---------------
+    case ON_UPDATE_HANDLE:
+      return {
+        ...state,
+        edit: false,
+        taskQuery: state.taskQuery.map(item => {
+          if (item.id === state.taskId) {
+            // update task
+            item["task"] = action.payload
+            return item
+          }
+          return item
+        })
       }
     // ---------------------- RETURN STATE ----------------------
     default:
