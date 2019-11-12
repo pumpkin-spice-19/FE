@@ -3,11 +3,8 @@ import Button from "@material-ui/core/Button"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import { makeStyles } from "@material-ui/core/styles"
-import FavoriteBorderSharpIcon from "@material-ui/icons/FavoriteBorderSharp"
 import EditSharpIcon from "@material-ui/icons/EditSharp"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { useDispatch } from "react-redux"
-import { deleteProject } from "../store/actions/projectAction"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +16,6 @@ const useStyles = makeStyles(theme => ({
 }))
 export default function TaskSideMenu({ children, onEdit, onDelete }) {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const handleClick = e => {
     e.preventDefault()

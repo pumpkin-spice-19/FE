@@ -1,5 +1,3 @@
-import axios from "axios"
-
 // -------------- TOGGLE PROJECT MODAL --------------
 export const TOGGLE_PROJECT_MODAL = "TOGGLE_PROJECT_MODAL"
 export const toggleProjectModal = () => {

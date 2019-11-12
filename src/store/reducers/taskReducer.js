@@ -5,6 +5,7 @@ import {
   SEARCH_TASK,
   ON_EDIT_HANDLE,
   ON_UPDATE_HANDLE,
+  TOGGLE_COMPLETED,
   CANCEL_EDIT_HANDLER
 } from "../actions/taskAction"
 import uuidv4 from "uuid/v4"
@@ -20,7 +21,8 @@ const initialState = {
       date: moment().format("DD/MM/YYYY"),
       id: uuidv4(),
       projectName: "Inbox",
-      task: "test"
+      task: "🦊 First Task Example...",
+      completed: false
     }
   ]
 }
@@ -79,6 +81,14 @@ export default function taskReducer(state = initialState, action) {
           }
           return item
         })
+      }
+    // ----------------- TOGGLE_COMPLETED ---------------
+    case TOGGLE_COMPLETED:
+      return {
+        ...state,
+        taskQuery: state.taskQuery.map(item =>
+          item.id === action.id ? { ...item, completed: !item.completed } : item
+        )
       }
     // ---------------------- RETURN STATE ----------------------
     default:

@@ -1,5 +1,9 @@
 import React from "react"
-import { deleteTask, onEditHandle } from "../store/actions/taskAction"
+import {
+  deleteTask,
+  onEditHandle,
+  toggleCompleted
+} from "../store/actions/taskAction"
 import { useDispatch, useSelector } from "react-redux"
 import RadioButtonUncheckedRoundedIcon from "@material-ui/icons/RadioButtonUncheckedRounded"
 import styled from "styled-components"
@@ -24,7 +28,9 @@ export const Task = ({ task }) => {
     .taskName {
       margin-right: auto;
     }
-    .horizonIcon {
+    .lineThrough {
+      text-decoration: line-through;
+      color: gray;
     }
   `
   // {
@@ -41,10 +47,12 @@ export const Task = ({ task }) => {
     <TaskStyle>
       <RadioButtonUncheckedRoundedIcon
         className="radioBtn"
-        // onClick={() => dispatch(deleteTask(task.id, activeProject))}
+        onClick={() => dispatch(toggleCompleted(task.id))}
         // ADD COMPLETED
       />
-      <p className="taskName">{task.task}</p>
+      <p className={`taskName ${task.completed && "lineThrough"}`}>
+        {task.task}
+      </p>
       <TaskSideMenu
         onEdit={() => dispatch(onEditHandle(task.id, task.task))}
         onDelete={() => dispatch(deleteTask(task.id, activeProject))}
