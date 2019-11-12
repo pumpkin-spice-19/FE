@@ -2,11 +2,11 @@ import { createStore, applyMiddleware, compose } from "redux"
 import throttle from "lodash/throttle"
 
 import thunk from "redux-thunk"
-import logger from "redux-logger"
+// import logger from "redux-logger"
 import rootReducer from "./reducers"
 import { loadState, saveState } from "../localStorage/localStorage"
 
-const middleware = [thunk, logger]
+const middleware = [thunk]
 const persistedState = loadState()
 
 const store = createStore(
