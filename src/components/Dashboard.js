@@ -5,8 +5,6 @@ import List from "@material-ui/core/List"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import Divider from "@material-ui/core/Divider"
 import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import ListItemText from "@material-ui/core/ListItemText"
 import InboxIcon from "@material-ui/icons/MoveToInbox"
 import AddIcon from "@material-ui/icons/Add"
 import TodayIcon from "@material-ui/icons/Today"
@@ -19,7 +17,6 @@ import {
   setActiveProject
 } from "../store/actions/projectAction"
 import { TaskListsContainer } from "./TaskListsContainer"
-import { getTaskQuery } from "../store/actions/taskAction"
 import SearchAppBar from "./SearchAppBar"
 import AddProjectForm from "./AddProjectForm"
 import AddTask from "./AddTask"
@@ -117,6 +114,11 @@ export default function DashBoard() {
   )
   const [openAddTask, setOpenAddTask] = useState(true)
   const { taskQuery } = useSelector(state => state.taskReducer)
+
+  useEffect(() => {
+    dispatch(setActiveProject("Inbox"))
+  }, [])
+
   const addProject = (
     <>
       <h2>Add Project</h2>
@@ -124,10 +126,6 @@ export default function DashBoard() {
       <AddProjectForm handleClose={() => dispatch(toggleProjectModal())} />
     </>
   )
-
-  useEffect(() => {
-    dispatch(setActiveProject("Inbox"))
-  }, [])
 
   const toggleAddTask = () => {
     setOpenAddTask(!openAddTask)

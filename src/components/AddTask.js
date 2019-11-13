@@ -29,9 +29,7 @@ const useStyles = makeStyles(theme => ({
 export default function AddTask({ toggleAddTask }) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const { projects, activeProject, darkMode } = useSelector(
-    state => state.projectReducer
-  )
+  const { projects, activeProject } = useSelector(state => state.projectReducer)
   const [stateTask, setStateTask] = useState({
     task: "",
     projectName: ""
@@ -51,7 +49,8 @@ export default function AddTask({ toggleAddTask }) {
       task: stateTask.task,
       projectName: stateTask.projectName || activeProject,
       date: moment().format("DD/MM/YYYY"),
-      id: uuidv4()
+      id: uuidv4(),
+      completed: false
     }
     // 05/11/2019
     dispatch(addTask(newTask))
