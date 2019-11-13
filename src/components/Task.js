@@ -1,20 +1,20 @@
-import React from "react"
+import React from "react";
 import {
   deleteTask,
   onEditHandle,
   toggleCompleted
-} from "../store/actions/taskAction"
-import { useDispatch, useSelector } from "react-redux"
-import RadioButtonUncheckedRoundedIcon from "@material-ui/icons/RadioButtonUncheckedRounded"
-import styled from "styled-components"
-import EditForm from "./EditForm"
-import TaskSideMenu from "./TaskSideMenu"
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
-
+} from "../store/actions/taskAction";
+import { useDispatch, useSelector } from "react-redux";
+import RadioButtonUncheckedRoundedIcon from "@material-ui/icons/RadioButtonUncheckedRounded";
+import styled from "styled-components";
+import EditForm from "./EditForm";
+import TaskSideMenu from "./TaskSideMenu";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 export const Task = ({ task }) => {
-  const dispatch = useDispatch()
-  const { activeProject } = useSelector(state => state.projectReducer)
-  const { edit, taskId } = useSelector(state => state.taskReducer)
+  const dispatch = useDispatch();
+  const { activeProject } = useSelector(state => state.projectReducer);
+  const { edit, taskId } = useSelector(state => state.taskReducer);
 
   const TaskStyle = styled.div`
     border-bottom: 1px solid #f2f0f0;
@@ -32,7 +32,7 @@ export const Task = ({ task }) => {
       text-decoration: line-through;
       color: gray;
     }
-  `
+  `;
   // {
   //   "task":"tes",
   //   "projectName":"Inbox",
@@ -41,15 +41,21 @@ export const Task = ({ task }) => {
   // }
 
   if (edit === true && task.id === taskId) {
-    return <EditForm />
+    return <EditForm />;
   }
   return (
     <TaskStyle>
-      <RadioButtonUncheckedRoundedIcon
-        className="radioBtn"
-        onClick={() => dispatch(toggleCompleted(task.id))}
-        // ADD COMPLETED
-      />
+      {task.completed ? (
+        <CheckCircleIcon
+          className="radioBtn"
+          onClick={() => dispatch(toggleCompleted(task.id))}
+        />
+      ) : (
+        <RadioButtonUncheckedRoundedIcon
+          className="radioBtn"
+          onClick={() => dispatch(toggleCompleted(task.id))}
+        />
+      )}
       <p className={`taskName ${task.completed && "lineThrough"}`}>
         {task.task}
       </p>
@@ -60,5 +66,5 @@ export const Task = ({ task }) => {
         <MoreHorizIcon className="horizonIcon" />
       </TaskSideMenu>
     </TaskStyle>
-  )
-}
+  );
+};
